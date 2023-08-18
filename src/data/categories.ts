@@ -34,7 +34,8 @@ export const categories: Record<string, CategoryData> = {
 	"Language": {
 		color: "amber",
 		categories: [
-			"Greek Letters"
+			"Greek Letters",
+			"Old English Letters"
 		]
 	},
 	"Natural Sciences": {

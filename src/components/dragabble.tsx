@@ -19,7 +19,7 @@ export default function Draggable({ id, children, className }: Props) {
 	} : undefined;
 
 	return (
-		<button ref={setNodeRef} style={style} {...listeners} {...attributes} className={className}>
+		<button ref={setNodeRef} style={style} {...listeners} {...attributes} className={`touch-none ${className}`}>
 			{children}
 		</button>
 	);

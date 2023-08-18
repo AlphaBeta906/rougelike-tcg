@@ -994,10 +994,6 @@ export const cards: Record<string, CardData> = {
 				description: "All Alchemy cards, gains 25 power for the round."
 			},
 			{
-				type: "play",
-				description: "All Notation cards, gains 25 power for the round."
-			},
-			{
 				type: "return",
 				description: "",
 				moveContent: {
@@ -1012,5 +1008,47 @@ export const cards: Record<string, CardData> = {
 			}
 		],
 		category: "Alchemy"
-	}
+	},
+	"Wynn": {
+		image: "img/wynn.png",
+		type: "effect",
+		rarity: "epic",
+		energy: 8,
+		power: 77,
+		moves: [
+			{
+				type: "play",
+				description: "M",
+				moveContent: {
+					conditions: {
+						winning: true
+					},
+					target: {
+						player: true,
+						hand: true
+					},
+					effects: {
+						powerChange: 50,
+						forMoves: 1
+					}
+				}
+			}
+		],
+		category: "Old English Letters"
+	},
+	"Æsh": {
+		image: "img/aesh.png",
+		type: "effect",
+		rarity: "rare",
+		availability: "limited",
+		energy: 6,
+		power: 43,
+		moves: [
+			{
+				type: "play",
+				description: 'Your cards that contains "ae", will gain 40 power for this turn.',
+			}
+		],
+		category: "Old English Letters"
+	},
 }
