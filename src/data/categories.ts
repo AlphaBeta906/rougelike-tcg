@@ -8,6 +8,7 @@ export const categories: Record<string, CategoryData> = {
 		color: "fuchsia",
 		categories: [
 			"Logical Operators",
+			"Logical Fallacies",
 			"Paradoxes",
 			"Early Chinese Philosophy",
 			"Taoism"
@@ -15,7 +16,10 @@ export const categories: Record<string, CategoryData> = {
 	},
 	"Religions": {
 		color: "red",
-		categories: []
+		categories: [
+			"Aztec Mythology",
+			"Egyptian Mythology"
+		]
 	},
 	"Social Sciences": {
 		color: "orange",
@@ -23,7 +27,8 @@ export const categories: Record<string, CategoryData> = {
 			"Technical Analysis",
 			"Weird Indicators",
 			"Companies",
-			"Cheating"
+			"Cheating",
+			"Unintended Consequences"
 		]
 	},
 	"Language": {
@@ -43,18 +48,22 @@ export const categories: Record<string, CategoryData> = {
 			"Medicine",
 			"Irrationals",
 			"Beyond the Standard Model",
-			"Sequences"
+			"Sequences",
+			"Alchemy"
 		]
 	},
 	"Applied Sciences": {
 		color: "sky",
-		categories: []
+		categories: [
+			"Quantum Computing"
+		]
 	},
 	"The Arts": {
 		color: "blue",
 		categories: [
 			"Poker",
-			"Aesthetics"
+			"Aesthetics",
+			"Music Theory"
 		]
 	},
 	"Literature": {
@@ -66,7 +75,8 @@ export const categories: Record<string, CategoryData> = {
 	"History & Geography": {
 		color: "violet",
 		categories: [
-			"Historical Libraries"
+			"Historical Libraries",
+			"The Pythagoreans"
 		]
 	},
 }

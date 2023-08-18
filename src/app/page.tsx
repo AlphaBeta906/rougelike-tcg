@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import type { TCard } from "@/data/cardTypes";
+import type { Move } from "@/data/cardTypes";
 
 import { useEffect, useState, useCallback } from "react";
 import { DndContext, rectIntersection, DragOverlay } from '@dnd-kit/core';
@@ -13,21 +14,28 @@ import Droppable from "@/components/dropable";
 import Sortable from "@/components/sortable";
 import range from "@/lib/range";
 import shuffleDictionary from "@/lib/shuffleDictionary";
+import moveContentParser from "@/lib/moveContentParser";
 
 export default function Home() {
 	const [isDragging, setIsDragging] = useState(false);
 	const [dropData, setDropData] = useState<object>({});
 	const [activeId, setActiveId] = useState(null);
-	const [cardsData, setCardsData] = useState<object>({});
-	const [tp, setTp] = useState<number>(0);
+	const [cardsData, setCardsData] = useState<{ [key: string]: TCard }>({});
+	const [tp, setTp] = useState<{ [key: string]: { name: string, basePower: number, additionalPower: number } }>({});
+	const [top, setTop] = useState<number>();
+	const [adp, setAdp] = useState<number>();
 	const [reload, setReload] = useState(true);
 	const [items, setItems] = useState<string[]>([]);
 
-	
 	useEffect(() => {
-		console.log("Initial dropData:", dropData);
-	}, []);	  
-	useEffect(() => console.log(dropData), [dropData]);
+		console.log("Initial tp:", tp);
+	}, []);
+	useEffect(() => console.log("Tp update:", tp), [tp]);
+
+	useEffect(() => {
+		console.log("Initial cardsData:", cardsData);
+	}, []);
+	useEffect(() => console.log("cardsData update:", cardsData), [cardsData]);
 
 	const handleDragStart = useCallback((event: any) => {
 		const { active } = event;
@@ -42,53 +50,99 @@ export default function Home() {
 		const card = active.id;
 		const cardData = cards[card]
 
-		console.log(dropData)
-
-		if (!(over.id in dropData)) {
-			setTp(tp + cardData.power)
-		} else {
-			console.log(cardsData)
-			const replaceCard: TCard = cardsData[over.id as keyof unknown]
-
-			console.log(replaceCard)
-
-			setTp(tp - replaceCard.power + cardData.power)
+		let newTp = tp;
+		newTp[over.id] = {
+			name: card,
+			basePower: cardData.power,
+			additionalPower: 0
 		}
+		console.log(newTp)
+		setTp(newTp)
 
-		const newData = {
+		setDropData({
 			...dropData,
 			[over.id]: <Card
 				name={card}
 				{...cards[card]}
 			/>
-		}
-		console.log(newData)
-
-		setDropData(newData)
-		setCardsData({
-			...cardsData,
-			[over.id]: {
-				...cards[card],
-				name: card
-			}
 		})
-	}, [dropData, cardsData]);
+		
+		let newCardsData: { [key: string]: TCard } = { ...cardsData }
+		newCardsData[over.id] = {
+			...cards[card],
+			name: card
+		}
+		setCardsData(newCardsData)
+
+		newTp = {};
+		Object.keys(tp).forEach((key) => {
+			newTp[key] = {
+				...tp[key],
+				additionalPower: 0,
+			};
+		});
+
+		const cardReqData = Object.values(tp).map((val) => cards[val.name]);
+		const moves = cardReqData.filter(x => x !== null).map(x => x?.moves).flat()
+
+		for (const move of moves) {
+			console.log(move)
+			if (!move?.moveContent) {
+				continue;
+			}
+
+			const moveData = move.moveContent
+
+			const { target, effects } = moveData;
+
+			if (target?.specificCards !== undefined && effects?.powerChange !== undefined) {
+				const specificCards = target.specificCards;
+				const cardNames = Object.values(tp).map((x) => x.name);
+				const intersection = specificCards.filter((x) => cardNames.includes(x));
+
+				console.log(intersection)
+
+				for (const card of Object.values(tp)) {
+					const { name } = card;
+
+					if (intersection.includes(name)) {
+						const key = Object.keys(newTp).find((key) => newTp[key].name === name);
+
+						console.log(key)
+
+						if (!key) {
+							return;
+						}
+
+						const newAdditionalPower =
+							(newTp[key].additionalPower ?? 0) + (effects.powerChange ?? 0);
+
+						newTp[key].additionalPower = newAdditionalPower;
+					}
+				}
+			}
+		}
+		console.log("end!")
+		setTp(newTp)
+		setTop(Object.values(tp).reduce((acc, { basePower, additionalPower }) => acc + basePower + additionalPower, 0))
+		setAdp(Object.values(tp).reduce((acc, { additionalPower }) => acc + additionalPower, 0))
+	}, [tp, dropData, cardsData, adp, top]);
 
 	const handleDragEndSortable = useCallback((event: any) => {
-        const { active, over } = event;
+		const { active, over } = event;
 
-        if (active.id !== over?.id) {
-            setItems((items) => {
-                const oldIndex = items.indexOf(active.id);
-                const newIndex = items.indexOf(over!.id);
+		if (active.id !== over?.id) {
+			setItems((items) => {
+				const oldIndex = items.indexOf(active.id);
+				const newIndex = items.indexOf(over!.id);
 
-                return arrayMove(items, oldIndex, newIndex);
-            });
-        }
-    }, [dropData, cardsData]);
+				return arrayMove(items, oldIndex, newIndex);
+			});
+		}
+	}, [dropData, cardsData]);
 
 	const handleDragEnd = useCallback((event: any) => {
-        const { over } = event;
+		const { over } = event;
 
 		if (over === null) {
 			setIsDragging(false)
@@ -120,6 +174,11 @@ export default function Home() {
 		}
 	}, [reload])
 
+	useEffect(() => {
+		setTop(Object.values(tp).reduce((acc, { basePower, additionalPower }) => acc + basePower + additionalPower, 0))
+		setAdp(Object.values(tp).reduce((acc, { additionalPower }) => acc + additionalPower, 0))
+	}, [tp])
+
 	return (
 		<>
 			<DndContext
@@ -145,12 +204,13 @@ export default function Home() {
 					})}
 				</div>
 
-				<div>Total power: {tp}</div>
+				<div>Total power: {top}</div>
+				<div>Additional power: {adp}</div>
 
 				<div className="grid gap-2 grid-cols-4 w-fit">
 					<SortableContext items={items} strategy={rectSortingStrategy}>
 						{items.map((id) => (
-							<Sortable id={id} key={id} className={`shadow-xl ${id === activeId ? "opacity-50": ""}`}>
+							<Sortable id={id} key={id} className={`shadow-xl ${id === activeId ? "opacity-50" : ""}`}>
 								<Card
 									{...cards[id]}
 									name={id}
@@ -159,7 +219,7 @@ export default function Home() {
 						))}
 					</SortableContext>
 				</div>
-				<DragOverlay>
+				<DragOverlay className="shadow-xl">
 					{activeId ? <Card {...cards[activeId]} name={activeId} /> : null}
 				</DragOverlay>
 			</DndContext>
