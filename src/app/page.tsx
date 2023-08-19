@@ -207,10 +207,10 @@ export default function Home() {
 				<div>Total power: {top}</div>
 				<div>Additional power: {adp}</div>
 
-				<div className="grid gap-2 grid-cols-4 w-fit">
+				<div className="grid gap-2 grid-cols-5 w-fit">
 					<SortableContext items={items} strategy={rectSortingStrategy}>
-						{items.map((id) => (
-							<Sortable id={id} key={id} className={`shadow-xl ${id === activeId ? "opacity-50" : ""}`}>
+						{items.map((id, index) => (
+							<Sortable id={id} key={id} className={`${index % 5 === 0 ? "" : "-ml-5"} shadow-xl ${id === activeId ? "opacity-0" : ""}`}>
 								<Card
 									{...cards[id]}
 									name={id}

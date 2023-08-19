@@ -129,7 +129,7 @@ export default function Card({ name, image, type, rarity, availability="none", e
 
 	return (
 		<div className={`bg-gradient-to-r p-[3px] ${colorDefiner(400)} box-border rounded w-[18rem] h-[30rem]`}>
-			<div className={`flex flex-col p-2 rounded-sm w-full h-full bg-gradient-to-r ${colorDefiner(100)}`}>
+			<div className={`flex flex-col p-2 rounded-sm w-full h-full bg-gradient-to-r ${colorDefiner(100)} bg-opacity-20`}>
 				<div className="text-center text-lg font-extrabold pb-2 block">{name}</div>
 
 				<div className="flex gap-2">
