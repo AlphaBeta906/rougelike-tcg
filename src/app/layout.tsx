@@ -16,7 +16,7 @@ type Props = {
 
 export default function RootLayout({ children }: Props) {
 	return (
-		<html lang="en">
+		<html lang="en" className="overflow-x-hidden">
 			<body className={`overflow-y-scroll overflow-x-hidden ${inter.className}`}>
 				<main className="m-5">
 					{children}
