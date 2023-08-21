@@ -3,7 +3,7 @@ import { MoveContent } from "@/lib/moveContentParser";
 const rarity = ["common", "rare", "epic", "legendary"] as const
 type Rarity = typeof rarity[number];
 
-const type = ["combatant", "resource", "effect", "tool", "trap"] as const
+const type = ["combatant", "resource", "effect", "operator", "trap"] as const
 type Type = typeof type[number];
 
 const moveType = ["ability", "start", "draw", "play", "trap", "return", "end round", "end turn", "linger", "restriction"] as const

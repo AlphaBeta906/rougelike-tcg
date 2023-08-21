@@ -23,7 +23,6 @@ for (const colorName in tailwindColors) {
         colorSafeList.push(`bg-${colorName}-${shade}`)
         colorSafeList.push(`from-${colorName}-${shade}`)
         colorSafeList.push(`to-${colorName}-${shade}`)
-        colorSafeList.push(`via-${colorName}-${shade}`)
       }
     })
   }

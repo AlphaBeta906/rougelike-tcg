@@ -337,7 +337,7 @@ export const cards: Record<string, CardData> = {
 	},
 	"Planck Constant": {
 		image: "img/planck-constant.png",
-		type: "tool",
+		type: "operator",
 		rarity: "rare",
 		energy: 3,
 		power: 20,
@@ -726,7 +726,7 @@ export const cards: Record<string, CardData> = {
 	"Fibonacci Sequence": {
 		image: "img/fibonacci-sequence.png",
 		bgCover: true,
-		type: "tool",
+		type: "operator",
 		availability: "limited",
 		rarity: "rare",
 		energy: 11,
@@ -846,7 +846,7 @@ export const cards: Record<string, CardData> = {
 	"Quantum Tunneling": {
 		image: "img/quantum-tunneling.png",
 		bgCover: true,
-		type: "tool",
+		type: "operator",
 		rarity: "legendary",
 		energy: 7,
 		power: 20,
@@ -897,7 +897,7 @@ export const cards: Record<string, CardData> = {
 	"Hippasus of Metapontum": {
 		image: "img/hippasus.png",
 		bgCover: true,
-		type: "tool",
+		type: "operator",
 		rarity: "legendary",
 		availability: "limited",
 		energy: 14,
@@ -953,7 +953,7 @@ export const cards: Record<string, CardData> = {
 	"Harmonic Resonance": {
 		image: "img/harmonic-resonance.png",
 		bgCover: true,
-		type: "tool",
+		type: "operator",
 		rarity: "epic",
 		energy: 5,
 		power: 30,

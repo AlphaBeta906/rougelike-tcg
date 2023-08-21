@@ -11,7 +11,7 @@ type Props = {
 
 export default function Draggable({ id, children, className }: Props) {
 	const {attributes, listeners, setNodeRef, transform} = useDraggable({
-		id: id,
+		id: id
 	});
 
 	const style = transform ? {

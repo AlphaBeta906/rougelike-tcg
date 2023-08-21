@@ -21,8 +21,8 @@ export default function Card({ name, image, type, rarity, availability="none", e
 		case "effect":
 			typeMarker = <div className="w-full text-white rounded-lg bg-violet-500 flex items-center justify-center text-[0.7rem] mb-2 h-[calc(31.5938px-8px)] border-violet-600 border-2 font-semibold">Effect</div>
 			break;
-		case "tool":
-			typeMarker = <div className="w-full text-white rounded-lg bg-slate-500 flex items-center justify-center text-[0.7rem] mb-2 h-[calc(31.5938px-8px)] border-slate-600 border-2 font-semibold">Tool</div>
+		case "operator":
+			typeMarker = <div className="w-full text-white rounded-lg bg-emerald-500 flex items-center justify-center text-[0.7rem] mb-2 h-[calc(31.5938px-8px)] border-emerald-600 border-2 font-semibold">Operator</div>
 			break;
 	}
 
@@ -119,7 +119,7 @@ export default function Card({ name, image, type, rarity, availability="none", e
 			break
 	}
 	
-	function colorDefiner(shade: number) {
+	function colorDefiner(shade: number, transparent=false) {
 		if (color.length === 1) {
 			return `from-${color}-${shade} to-${color}-${shade}`
 		} else {
@@ -129,8 +129,8 @@ export default function Card({ name, image, type, rarity, availability="none", e
 
 	return (
 		<div className={`bg-gradient-to-r p-[3px] ${colorDefiner(400)} box-border rounded w-[18rem] h-[30rem]`}>
-			<div className={`flex flex-col p-2 rounded-sm w-full h-full bg-gradient-to-r ${colorDefiner(100)} bg-opacity-20`}>
-				<div className="text-center text-lg font-extrabold pb-2 block">{name}</div>
+			<div className={`flex flex-col p-2 rounded-sm w-full h-full bg-gradient-to-r ${colorDefiner(100)}`}>
+				<div className="text-center text-lg font-extrabold pb-2 block opacity-100 blur-0">{name}</div>
 
 				<div className="flex gap-2">
 					{typeMarker}
