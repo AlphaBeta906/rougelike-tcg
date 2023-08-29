@@ -11,7 +11,8 @@ export const categories: Record<string, CategoryData> = {
 			"Logical Fallacies",
 			"Paradoxes",
 			"Early Chinese Philosophy",
-			"Taoism"
+			"Taoism",
+			"Classical Conditioning"
 		]
 	},
 	"Religions": {
@@ -54,9 +55,11 @@ export const categories: Record<string, CategoryData> = {
 		]
 	},
 	"Applied Sciences": {
-		color: "sky",
+		color: "cyan",
 		categories: [
-			"Quantum Computing"
+			"Quantum Computing",
+			"Spices",
+			"Early Technology"
 		]
 	},
 	"The Arts": {
@@ -64,7 +67,9 @@ export const categories: Record<string, CategoryData> = {
 		categories: [
 			"Poker",
 			"Aesthetics",
-			"Music Theory"
+			"Music Theory",
+			"Music Technology",
+			"Illusions"
 		]
 	},
 	"Literature": {

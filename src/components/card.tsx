@@ -28,7 +28,7 @@ export default function Card({ name, image, type, rarity, availability="none", e
 
 	switch (rarity) {
 		case "common":
-			rarityStyle = "text-white bg-zinc-400 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.7rem] mb-2 border-zinc-500 border-2 font-semibold"
+			rarityStyle = "text-white bg-neutral-400 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.7rem] mb-2 border-neutral-500 border-2 font-semibold"
 			rarityName = "Common"
 			break;
 		case "rare":
@@ -119,7 +119,7 @@ export default function Card({ name, image, type, rarity, availability="none", e
 			break
 	}
 	
-	function colorDefiner(shade: number, transparent=false) {
+	function colorDefiner(shade: number) {
 		if (color.length === 1) {
 			return `from-${color}-${shade} to-${color}-${shade}`
 		} else {

@@ -9,7 +9,7 @@ export default function CardReduced({ name, rarity, availability="none", energy,
 
 	switch (rarity) {
 		case "common":
-			rarityStyle = "text-white bg-zinc-400 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.7rem] border-zinc-500 border-2 font-semibold"
+			rarityStyle = "text-white bg-neutral-400 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.7rem] mb-2 border-neutral-500 border-2 font-semibold"
 			rarityName = "Common"
 			break;
 		case "rare":

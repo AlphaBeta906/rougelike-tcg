@@ -13,6 +13,8 @@ export type MoveContent = {
 		inputCard?: true
 		category?: string[] // will change later
 		subcategory?: string[] // will change later
+		numberOfCards?: number
+		
 	},
 	target?: {
 		player?: boolean // (player === true) => player & (player === false) => opponent
@@ -25,6 +27,7 @@ export type MoveContent = {
 		thisCard?: true
 		inputCard?: true
 		allCards?: true
+		oneCard?: true
 	},
 	action?: {
 		from: "choose" | "force"
@@ -32,16 +35,21 @@ export type MoveContent = {
 	}
 	effects?: {
 		powerChange?: number
+		amplify?: number
 		permanent?: true
 		forMoves?: number
-		sacrifice?: true,
-		discardNumber?: number | "all",
+		sacrifice?: true
+		discardNumber?: number | "all"
 		discardAndReplace?: true
 		noRevive?: true
+		lock?: true
+		burn?: true
+		burnDegree?: number
 	}
 	restriction?: {
 		target?: "abilities"
 		untilWhen?: "turn" | "round" | "returned"
+		sacrificeAfterMoves?: number
 	}
 }
 
@@ -142,6 +150,7 @@ export default function moveContentParser(moveContent: MoveContent) {
 	// Target parser
 	if (target) {
 		if (target.allCards !== undefined) targetList.push("all of")
+		if (target.oneCard !== undefined) targetList.push("one of")
 
 		if (target.player !== undefined) targetList.push(target.player ? "your" : (action?.from === "force" ? "their" : "your opponent's"))
 		else if (target.everyone !== undefined) targetList.push("all")
@@ -176,7 +185,13 @@ export default function moveContentParser(moveContent: MoveContent) {
 		if (effects.powerChange !== undefined) {
 			if (effects.powerChange > 0) effectsList.push(`gains ${effects.powerChange} power`)
 			else if (effects.powerChange < 0) effectsList.push(`loses ${Math.abs(effects.powerChange)} power`)
+		} else if (effects.amplify !== undefined) {
+			effectsList.push(`is amplified by ${effects.amplify} power`)
 		}
+
+		if (effects.lock !== undefined) effectsList.push("will get locked")
+		else if (effects.burn !== undefined && effects.burnDegree !== undefined) effectsList.push(`will burn (${effects.burnDegree}x)`)
+		else if (effects.burn !== undefined) effectsList.push("will burn")
 
 		if (effects.permanent !== undefined) effectsList.push("permanently")
 		else if (effects.forMoves !== undefined && effects.forMoves === 1) effectsList.push(`for this turn`)
@@ -192,25 +207,29 @@ export default function moveContentParser(moveContent: MoveContent) {
 	if (restriction) {
 		let restrictionTarget, restrictionUntilWhen = "";
 
-		switch (restriction.target) {
-			case "abilities":
-				restrictionTarget = "abilities"
-				break;
-		}
+		if (restriction.target !== undefined && restriction.untilWhen !== undefined) {
+			switch (restriction.target) {
+				case "abilities":
+					restrictionTarget = "abilities"
+					break;
+			}
 
-		switch (restriction.untilWhen) {
-			case "returned":
-				restrictionUntilWhen = "returned"
-				break;
-			case "round":
-				restrictionUntilWhen = "the end of the round"
-				break;
-			case "turn":
-				restrictionUntilWhen = "the end of the turn"
-				break;
-		}
+			switch (restriction.untilWhen) {
+				case "returned":
+					restrictionUntilWhen = "returned"
+					break;
+				case "round":
+					restrictionUntilWhen = "the end of the round"
+					break;
+				case "turn":
+					restrictionUntilWhen = "the end of the turn"
+					break;
+			}
 
-		restrictionsText = `This card's ${restrictionTarget} can be used once until ${restrictionUntilWhen}`
+			restrictionsText = `This card's ${restrictionTarget} can be used once until ${restrictionUntilWhen}`
+		} else if (restriction.sacrificeAfterMoves) {
+			restrictionsText = `This card will be sacrificed and can't be revived after ${restriction.sacrificeAfterMoves} moves`
+		}
 	}
 
 	return formatText(`${restrictionsText}${conditionsText ?? ""}${conditions ? ", " : ""}${targetList.join(" ")}${effectsList.length !== 0 ? " " : ""}${effectsList.join(" ")}.`);

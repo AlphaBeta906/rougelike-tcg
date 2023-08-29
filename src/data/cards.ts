@@ -534,7 +534,7 @@ export const cards: Record<string, CardData> = {
 		power: 100,
 		moves: [
 			{
-				type: "draw",
+				type: "play",
 				description: "All player's Golden Ratio and Wave Function cards, wherever it is, gains 60 power permanently.",
 				moveContent: {
 					target: {
@@ -1051,4 +1051,188 @@ export const cards: Record<string, CardData> = {
 		],
 		category: "Old English Letters"
 	},
+	"Amp": {
+		image: "img/amp.png",
+		bgCover: true,
+		type: "operator",
+		rarity: "epic",
+		availability: "limited",
+		energy: 4,
+		power: 20,
+		moves: [
+			{
+				type: "play",
+				description: '.',
+				moveContent: {
+					target: {
+						inputCard: true
+					},
+					effects: {
+						amplify: 20,
+						forMoves: 1
+					}
+				}
+			}
+		],
+		category: "Music Technology"
+	},
+	"Pepper's Ghost": {
+		image: "img/pepper's-ghost.png",
+		bgCover: true,
+		type: "operator",
+		rarity: "epic",
+		availability: "limited",
+		energy: 8,
+		power: 20,
+		moves: [
+			{
+				type: "return",
+				description: "Duplicate the input card that lasts until played, and place it on your hand.",
+			}
+		],
+		category: "Illusions × Spices"
+	},
+	"Pavlov's Bell": {
+		image: "img/pavlov's-bell.png",
+		type: "effect",
+		rarity: "common",
+		availability: "limited",
+		energy: 2,
+		power: 30,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: false,
+						oneCard: true
+					},
+					effects: {
+						lock: true,
+						forMoves: 1
+					}
+				}
+			},
+			{
+				type: "restriction",
+				description: "",
+				moveContent: {
+					restriction: {
+						sacrificeAfterMoves: 2
+					}
+				}
+			}
+		],
+		category: "Classical Conditioning"
+	},
+	"Wheel": {
+		image: "img/wheel.png",
+		bgCover: true,
+		type: "combatant",
+		rarity: "epic",
+		energy: 5,
+		power: 67,
+		moves: [
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					target: {
+						player: false,
+						oneCard: true
+					},
+					effects: {
+						burn: true,
+						burnDegree: 0.6,
+						forMoves: 5
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						specificCards: ["Pi", "Tau", "Radian"]
+					},
+					effects: {
+						powerChange: 14,
+						permanent: true
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						specificCards: ["Axel"]
+					},
+					effects: {
+						powerChange: 40,
+						forMoves: 1
+					}
+				}
+			}	
+		],
+		category: "Early Technology"
+	},
+	"Pi": {
+		image: "img/pi.png",
+		type: "combatant",
+		rarity: "legendary",
+		availability: "limited",
+		energy: 6,
+		power: 62,
+		moves: [
+			{
+				type: "end turn",
+				description: "",
+				moveContent: {
+					conditions: {
+						winning: true
+					},
+					target: {
+						thisCard: true
+					},
+					effects: {
+						powerChange: 14,
+						permanent: true
+					}
+				}
+			},
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						subcategory: ["Greek Letters", "Irrationals"]
+					},
+					effects: {
+						powerChange: 14,
+						permanent: true
+					}
+				}
+			},
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						specificCards: ["Phi", "Tau"]
+					},
+					effects: {
+						powerChange: 14,
+						permanent: true
+					}
+				}
+			}
+		],
+		category: "Greek Letters × Irrationals"
+	}
 }
