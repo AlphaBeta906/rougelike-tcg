@@ -4,18 +4,24 @@ type CategoryData = {
 }
 
 export const categories: Record<string, CategoryData> = {
-	"Philosophy & Psychology": {
+	"Philosophy": {
 		color: "fuchsia",
 		categories: [
 			"Logical Operators",
 			"Logical Fallacies",
 			"Paradoxes",
 			"Early Chinese Philosophy",
-			"Taoism",
+			"Taoism"
+		]
+	},
+	"Psychology": {
+		color: "pink",
+		categories: [
+			"Stimulants",
 			"Classical Conditioning"
 		]
 	},
-	"Religions": {
+	"Religion & Mythology": {
 		color: "red",
 		categories: [
 			"Aztec Mythology",
@@ -39,23 +45,33 @@ export const categories: Record<string, CategoryData> = {
 			"Old English Letters"
 		]
 	},
-	"Natural Sciences": {
+	"Biology": {
+		color: "emerald",
+		categories: [
+			"Ants",
+			"Sugars"
+		]
+	},
+	"Mathematics": {
 		color: "teal",
 		categories: [
+			"Irrationals",
+			"Sequences",
+		]
+	},
+	"Natural Sciences": {
+		color: "cyan",
+		categories: [
 			"Functional Groups",
-			"Stimulants",
 			"Alcohols",
 			"Quantum Mechanics",
-			"Ants",
 			"Medicine",
-			"Irrationals",
 			"Beyond the Standard Model",
-			"Sequences",
 			"Alchemy"
 		]
 	},
 	"Applied Sciences": {
-		color: "cyan",
+		color: "sky",
 		categories: [
 			"Quantum Computing",
 			"Spices",
@@ -82,12 +98,13 @@ export const categories: Record<string, CategoryData> = {
 		color: "violet",
 		categories: [
 			"Historical Libraries",
-			"The Pythagoreans"
+			"The Pythagoreans",
+			"Aerial Warfare"
 		]
 	},
 }
 
-export default function getCategory(categoryFindName: string): string[] {
+export function getCategoryColors(categoryFindName: string): string[] {
 	interface Dict {
 		[key: number]: string;
 	}
@@ -118,6 +135,30 @@ export default function getCategory(categoryFindName: string): string[] {
 		}
 
 		return Object.values(colors)
+	} else {
+		return Object.values(colors)
+	}
+}
+
+export function getCategory(categoryFindName: string): string[] {	  
+	const categoriesToFind = categoryFindName.split(" × ");
+	let colors: string[] = [];
+
+	for (const categoryName in categories) {
+		const currentCategory = categories[categoryName];
+
+		const subcategory = currentCategory.categories.find(category => categoriesToFind.includes(category));
+
+		if (subcategory) {
+			colors = [
+				...colors,
+				categoryName
+			]
+		}
+	}
+
+	if (Object.keys(colors).length === 0) {
+		return [];
 	} else {
 		return Object.values(colors)
 	}

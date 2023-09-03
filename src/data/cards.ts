@@ -2,7 +2,7 @@ import { CardData } from "./cardTypes"
 
 export const cards: Record<string, CardData> = {
 	"Peak-and-Trough Analysis": {
-		image: "img/peak-and-trough.png",
+		image: "peak-and-trough.png",
 		type: "effect",
 		rarity: "rare",
 		availability: "limited",
@@ -47,7 +47,7 @@ export const cards: Record<string, CardData> = {
 		category: "Technical Analysis"
 	},
 	"Alcohol": {
-		image: "img/alcohol.png",
+		image: "alcohol.png",
 		type: "effect",
 		rarity: "rare",
 		energy: 6,
@@ -59,7 +59,6 @@ export const cards: Record<string, CardData> = {
 				moveContent: {
 					target: {
 						player: true,
-						anywhere: true,
 						subcategory: ["Alcohols"]
 					},
 					effects: {
@@ -74,7 +73,6 @@ export const cards: Record<string, CardData> = {
 				moveContent: {
 					target: {
 						player: false,
-						anywhere: true,
 						specificCards: ["Sober", "Prohibition"]
 					},
 					effects: {
@@ -87,7 +85,7 @@ export const cards: Record<string, CardData> = {
 		category: "Functional Groups"
 	},
 	"Isopropyl Alcohol": {
-		image: "img/isopropyl-alcohol.png",
+		image: "isopropyl-alcohol.png",
 		type: "combatant",
 		rarity: "common",
 		energy: 2,
@@ -99,7 +97,6 @@ export const cards: Record<string, CardData> = {
 				moveContent: {
 					target: {
 						player: false,
-						anywhere: true,
 						subcategory: ["Bacteria", "Virus"]
 					},
 					effects: {
@@ -112,7 +109,7 @@ export const cards: Record<string, CardData> = {
 		category: "Alcohols"
 	},
 	"GreenCross": {
-		image: "img/greencross.png",
+		image: "greencross.png",
 		type: "combatant",
 		rarity: "legendary",
 		availability: "limited",
@@ -125,7 +122,6 @@ export const cards: Record<string, CardData> = {
 				moveContent: {
 					target: {
 						player: true,
-						anywhere: true,
 						subcategory: ["Alcohol"]
 					},
 					effects: {
@@ -156,7 +152,7 @@ export const cards: Record<string, CardData> = {
 		category: "Companies × Alcohols"
 	},
 	"Biogenic Alcohol": {
-		image: "img/biogenic.png",
+		image: "biogenic.png",
 		type: "combatant",
 		rarity: "legendary",
 		availability: "limited",
@@ -169,7 +165,6 @@ export const cards: Record<string, CardData> = {
 				moveContent: {
 					target: {
 						player: true,
-						anywhere: true,
 						subcategory: ["Alcohol"]
 					},
 					effects: {
@@ -200,7 +195,7 @@ export const cards: Record<string, CardData> = {
 		category: "Companies × Alcohols",
 	},
 	"Paracetamol Biogesic": {
-		image: "img/paracetamol-biogesic.png",
+		image: "paracetamol-biogesic.png",
 		type: "combatant",
 		rarity: "epic",
 		energy: 10,
@@ -243,7 +238,7 @@ export const cards: Record<string, CardData> = {
 		category: "Companies × Medicine"
 	},
 	"Asteraforte": {
-		image: "img/asteraforte.png",
+		image: "asteraforte.png",
 		type: "combatant",
 		rarity: "epic",
 		energy: 10,
@@ -286,7 +281,7 @@ export const cards: Record<string, CardData> = {
 		category: "Medicine"
 	},
 	"Plagiarism": {
-		image: "img/plagiarism.png",
+		image: "plagiarism.png",
 		bgCover: true,
 		type: "combatant",
 		rarity: "epic",
@@ -336,7 +331,7 @@ export const cards: Record<string, CardData> = {
 		category: "Cheating"
 	},
 	"Planck Constant": {
-		image: "img/planck-constant.png",
+		image: "planck-constant.png",
 		type: "operator",
 		rarity: "rare",
 		energy: 3,
@@ -363,7 +358,7 @@ export const cards: Record<string, CardData> = {
 		category: "Quantum Mechanics"
 	},
 	"January Barometer": {
-		image: "img/january-barometer.png",
+		image: "january-barometer.png",
 		bgCover: true,
 		type: "effect",
 		rarity: "legendary",
@@ -409,7 +404,7 @@ export const cards: Record<string, CardData> = {
 		category: "Weird Indicators"
 	},
 	"Support and Resistance": {
-		image: "img/support-and-resistance.png",
+		image: "support-and-resistance.png",
 		type: "effect",
 		rarity: "rare",
 		energy: 4,
@@ -423,7 +418,7 @@ export const cards: Record<string, CardData> = {
 		category: "Technical Analysis"
 	},
 	"Replete": {
-		image: "img/replete.png",
+		image: "replete.png",
 		bgCover: true,
 		type: "combatant",
 		rarity: "epic",
@@ -439,7 +434,7 @@ export const cards: Record<string, CardData> = {
 		category: "Ants"
 	},
 	"Caffeine": {
-		image: "img/caffeine.png",
+		image: "caffeine.png",
 		type: "effect",
 		rarity: "common",
 		availability: "limited",
@@ -454,7 +449,7 @@ export const cards: Record<string, CardData> = {
 		category: "Stimulants"
 	},
 	"Caesura": {
-		image: "img/caesura.png",
+		image: "caesura.png",
 		mini: true,
 		type: "effect",
 		rarity: "epic",
@@ -470,7 +465,7 @@ export const cards: Record<string, CardData> = {
 		category: "Poetic Devices"
 	},
 	"Oxymoron": {
-		image: "img/oxymoron.png",
+		image: "oxymoron.png",
 		type: "effect",
 		rarity: "common",
 		availability: "limited",
@@ -485,7 +480,7 @@ export const cards: Record<string, CardData> = {
 		category: "Poetic Devices"
 	},
 	"Negation": {
-		image: "img/negation.png",
+		image: "negation.png",
 		type: "effect",
 		rarity: "rare",
 		energy: 7,
@@ -500,7 +495,7 @@ export const cards: Record<string, CardData> = {
 		category: "Logical Operators"
 	},
 	"Golden Ratio": {
-		image: "img/golden-ratio.png",
+		image: "golden-ratio.png",
 		bgCover: true,
 		type: "combatant",
 		rarity: "rare",
@@ -513,8 +508,7 @@ export const cards: Record<string, CardData> = {
 				moveContent: {
 					target: {
 						player: true,
-						specificCards: ["Fibonacci Sequence"],
-						anywhere: true
+						specificCards: ["Fibonacci Sequence"]
 					},
 					effects: {
 						powerChange: 16,
@@ -526,7 +520,7 @@ export const cards: Record<string, CardData> = {
 		category: "Irrationals"
 	},
 	"Phi": {
-		image: "img/phi.png",
+		image: "phi.png",
 		type: "combatant",
 		rarity: "legendary",
 		availability: "restricted",
@@ -539,8 +533,21 @@ export const cards: Record<string, CardData> = {
 				moveContent: {
 					target: {
 						everyone: true,
-						specificCards: ["Golden Ratio", "Wave Function"],
-						anywhere: true
+						specificCards: ["Golden Ratio", "Wave Function"]
+					},
+					effects: {
+						powerChange: 60,
+						permanent: true
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "All player's Golden Ratio and Wave Function cards, wherever it is, gains 60 power permanently.",
+				moveContent: {
+					target: {
+						everyone: true,
+						specificCards: ["Phi", "Pi"]
 					},
 					effects: {
 						powerChange: 60,
@@ -552,7 +559,7 @@ export const cards: Record<string, CardData> = {
 		category: "Greek Letters"
 	},
 	"Wave Function": {
-		image: "img/wave-function.png",
+		image: "wave-function.png",
 		type: "combatant",
 		rarity: "epic",
 		energy: 6,
@@ -576,7 +583,7 @@ export const cards: Record<string, CardData> = {
 		category: "Quantum Mechanics"
 	},
 	"Ultraviolet Catastrophe": {
-		image: "img/ultraviolet-catastrophe.png",
+		image: "ultraviolet-catastrophe.png",
 		bgCover: true,
 		type: "combatant",
 		rarity: "rare",
@@ -589,8 +596,7 @@ export const cards: Record<string, CardData> = {
 				moveContent: {
 					target: {
 						player: true,
-						specificCards: ["Bright Line Spectra", "Photoelectric Effect"],
-						anywhere: true
+						specificCards: ["Bright Line Spectra", "Photoelectric Effect"]
 					},
 					effects: {
 						powerChange: 35,
@@ -602,7 +608,7 @@ export const cards: Record<string, CardData> = {
 		category: "Paradoxes × Quantum Mechanics"
 	},
 	"Mucking": {
-		image: "img/mucking.png",
+		image: "mucking.png",
 		bgCover: true,
 		type: "effect",
 		rarity: "epic",
@@ -625,7 +631,7 @@ export const cards: Record<string, CardData> = {
 		category: "Cheating × Poker"
 	},
 	"Taoism": {
-		image: "img/taoism.png",
+		image: "taoism.png",
 		type: "combatant",
 		rarity: "epic",
 		availability: "limited",
@@ -650,7 +656,7 @@ export const cards: Record<string, CardData> = {
 		category: "Early Chinese Philosophy"
 	},
 	"Tao": {
-		image: "img/tao.png",
+		image: "tao.png",
 		type: "effect",
 		rarity: "epic",
 		availability: "restricted",
@@ -669,7 +675,7 @@ export const cards: Record<string, CardData> = {
 		category: "Taoism"
 	},
 	"Lao Tzu": {
-		image: "img/lao-tzu.png",
+		image: "lao-tzu.png",
 		bgCover: true,
 		type: "combatant",
 		rarity: "legendary",
@@ -684,7 +690,7 @@ export const cards: Record<string, CardData> = {
 		category: "Taoism"
 	},
 	"Theory of Everything": {
-		image: "img/theory-of-everything.png",
+		image: "theory-of-everything.png",
 		bgCover: true,
 		type: "combatant",
 		availability: "restricted",
@@ -724,7 +730,7 @@ export const cards: Record<string, CardData> = {
 		category: "Beyond the Standard Model"
 	},
 	"Fibonacci Sequence": {
-		image: "img/fibonacci-sequence.png",
+		image: "fibonacci-sequence.png",
 		bgCover: true,
 		type: "operator",
 		availability: "limited",
@@ -740,7 +746,7 @@ export const cards: Record<string, CardData> = {
 		category: "Sequences"
 	},
 	"Minimalism": {
-		image: "img/minimalism.png",
+		image: "minimalism.png",
 		bgCover: true,
 		type: "resource",
 		rarity: "rare",
@@ -755,7 +761,7 @@ export const cards: Record<string, CardData> = {
 		category: "Aesthetics"
 	},
 	"Library of Alexandria": {
-		image: "img/library-of-alexandria.png",
+		image: "library-of-alexandria.png",
 		bgCover: true,
 		type: "resource",
 		rarity: "epic",
@@ -775,7 +781,7 @@ export const cards: Record<string, CardData> = {
 		category: "Historical Libraries"
 	},
 	"Tu Quoque": {
-		image: "img/tu-quoque.png",
+		image: "tu-quoque.png",
 		bgCover: true,
 		type: "trap",
 		rarity: "epic",
@@ -790,7 +796,7 @@ export const cards: Record<string, CardData> = {
 		category: "Logical Fallacies"
 	},
 	"Baghdad House of Wisdom": {
-		image: "img/baghdad-house-of-wisdom.png",
+		image: "baghdad-house-of-wisdom.png",
 		bgCover: true,
 		type: "effect",
 		rarity: "legendary",
@@ -810,7 +816,7 @@ export const cards: Record<string, CardData> = {
 		category: "Historical Libraries"
 	},
 	"Mictlantecuhtli": {
-		image: "img/mictlantecuhtli.png",
+		image: "mictlantecuhtli.png",
 		type: "combatant",
 		rarity: "epic",
 		availability: "limited",
@@ -830,7 +836,7 @@ export const cards: Record<string, CardData> = {
 		category: "Aztec Mythology"
 	},
 	"Khepri": {
-		image: "img/khepri.png",
+		image: "khepri.png",
 		type: "trap",
 		rarity: "epic",
 		energy: 4,
@@ -844,7 +850,7 @@ export const cards: Record<string, CardData> = {
 		category: "Egyptian Mythology"
 	},
 	"Quantum Tunneling": {
-		image: "img/quantum-tunneling.png",
+		image: "quantum-tunneling.png",
 		bgCover: true,
 		type: "operator",
 		rarity: "legendary",
@@ -859,7 +865,7 @@ export const cards: Record<string, CardData> = {
 		category: "Quantum Computing"
 	},
 	"The Cobra Effect": {
-		image: "img/the-cobra-effect.png",
+		image: "the-cobra-effect.png",
 		bgCover: true,
 		type: "trap",
 		rarity: "rare",
@@ -875,7 +881,7 @@ export const cards: Record<string, CardData> = {
 		category: "Unintended Consequences"
 	},
 	"Murphy's Law": {
-		image: "img/murphy's-law.png",
+		image: "murphy's-law.png",
 		bgCover: true,
 		type: "effect",
 		rarity: "legendary",
@@ -895,7 +901,7 @@ export const cards: Record<string, CardData> = {
 		category: "Unintended Consequences"
 	},
 	"Hippasus of Metapontum": {
-		image: "img/hippasus.png",
+		image: "hippasus.png",
 		bgCover: true,
 		type: "operator",
 		rarity: "legendary",
@@ -951,22 +957,33 @@ export const cards: Record<string, CardData> = {
 		category: "The Pythagoreans"
 	},
 	"Harmonic Resonance": {
-		image: "img/harmonic-resonance.png",
+		image: "harmonic-resonance.png",
 		bgCover: true,
 		type: "operator",
-		rarity: "epic",
+		rarity: "rare",
+		availability: "limited",
 		energy: 5,
 		power: 30,
 		moves: [
 			{
 				type: "play",
-				description: "All cards that are in the same category as the input card will gain 50 power for the round."
+				description: "All cards that are in the same category as the input card will gain 50 power for the round.",
+				moveContent: {
+					target: {
+						player: true,
+						inputCardTrait: "subcategory"
+					},
+					effects: {
+						powerChange: 18,
+						forMoves: 1
+					}
+				}
 			}
 		],
 		category: "Music Theory"
 	},
 	"Whole Note": {
-		image: "img/whole-note.png",
+		image: "whole-note.png",
 		mini: true,
 		type: "effect",
 		rarity: "epic",
@@ -982,7 +999,7 @@ export const cards: Record<string, CardData> = {
 		category: "Music Theory"
 	},
 	"Philosopher's Stone": {
-		image: "img/philosopher's-stone.png",
+		image: "philosopher's-stone.png",
 		type: "combatant",
 		rarity: "legendary",
 		availability: "restricted",
@@ -1010,7 +1027,7 @@ export const cards: Record<string, CardData> = {
 		category: "Alchemy"
 	},
 	"Wynn": {
-		image: "img/wynn.png",
+		image: "wynn.png",
 		type: "effect",
 		rarity: "epic",
 		energy: 8,
@@ -1037,7 +1054,7 @@ export const cards: Record<string, CardData> = {
 		category: "Old English Letters"
 	},
 	"Æsh": {
-		image: "img/aesh.png",
+		image: "aesh.png",
 		type: "effect",
 		rarity: "rare",
 		availability: "limited",
@@ -1052,7 +1069,7 @@ export const cards: Record<string, CardData> = {
 		category: "Old English Letters"
 	},
 	"Amp": {
-		image: "img/amp.png",
+		image: "amp.png",
 		bgCover: true,
 		type: "operator",
 		rarity: "epic",
@@ -1077,7 +1094,7 @@ export const cards: Record<string, CardData> = {
 		category: "Music Technology"
 	},
 	"Pepper's Ghost": {
-		image: "img/pepper's-ghost.png",
+		image: "pepper's-ghost.png",
 		bgCover: true,
 		type: "operator",
 		rarity: "epic",
@@ -1093,7 +1110,7 @@ export const cards: Record<string, CardData> = {
 		category: "Illusions × Spices"
 	},
 	"Pavlov's Bell": {
-		image: "img/pavlov's-bell.png",
+		image: "pavlov's-bell.png",
 		type: "effect",
 		rarity: "common",
 		availability: "limited",
@@ -1127,7 +1144,7 @@ export const cards: Record<string, CardData> = {
 		category: "Classical Conditioning"
 	},
 	"Wheel": {
-		image: "img/wheel.png",
+		image: "wheel.png",
 		bgCover: true,
 		type: "combatant",
 		rarity: "epic",
@@ -1181,7 +1198,7 @@ export const cards: Record<string, CardData> = {
 		category: "Early Technology"
 	},
 	"Pi": {
-		image: "img/pi.png",
+		image: "pi.png",
 		type: "combatant",
 		rarity: "legendary",
 		availability: "limited",
@@ -1234,5 +1251,128 @@ export const cards: Record<string, CardData> = {
 			}
 		],
 		category: "Greek Letters × Irrationals"
-	}
+	},
+	"Sucrose": {
+		image: "sucrose.png",
+		type: "resource",
+		rarity: "legendary",
+		energy: 4,
+		power: 60,
+		moves: [
+			{
+				type: "end turn",
+				description: "",
+				moveContent: {
+					effects: {
+						gainEnergy: 10
+					}
+				}
+			},
+			{
+				type: "return",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						hand: true
+					},
+					effects: {
+						powerChange: -65,
+						untilDestroyed: true
+					}
+				}
+			},
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						subcategory: ["Sugars"]
+					},
+					effects: {
+						powerChange: 20,
+						permanent: true
+					}
+				}
+			}
+		],
+		category: "Sugars"
+	},
+	"Kamikaze": {
+		image: "kamikaze.png",
+		bgCover: true,
+		type: "operator",
+		rarity: "epic",
+		energy: 5,
+		power: 0,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						inputCard: true
+					},
+					effects: {
+						powerChange: 65,
+						forMoves: 1
+					}
+				}
+			},
+			{
+				type: "return",
+				description: "",
+				moveContent: {
+					target: {
+						inputCard: true
+					},
+					effects: {
+						sacrifice: true,
+						noRevive: true
+					}
+				}
+			}
+		],
+		category: "Aerial Warfare"
+	},
+	"Psi": {
+		image: "psi.png",
+		type: "combatant",
+		rarity: "legendary",
+		availability: "limited",
+		energy: 10,
+		power: 70,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						category: ["Philosophy", "Psychology"]
+					},
+					effects: {
+						powerChange: 22,
+						permanent: true
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						everyone: true,
+						specificCards: ["Sai", "Neptune"]
+					},
+					effects: {
+						powerChange: 22,
+						permanent: true
+					}
+				}
+			}
+		],
+		category: "Greek Letters"
+	},
 }

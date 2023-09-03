@@ -1,12 +1,12 @@
 "use client"
 
 import { TCard, Move, MoveType } from '@/data/cardTypes';
-import getCategory from '@/data/categories';
+import { getCategoryColors } from '@/data/categories';
 import moveContentParser from '@/lib/moveContentParser';
 
 export default function Card({ name, image, type, rarity, availability="none", energy, power, moves, category, mini=false, bgCover=false}: TCard) {
 	let typeMarker, rarityStyle, rarityName, rarityMarker;
-	const color = getCategory(category)
+	const color = getCategoryColors(category)
 
 	switch (type) {
 		case "combatant":
@@ -127,8 +127,10 @@ export default function Card({ name, image, type, rarity, availability="none", e
 		}
 	}
 
+	if (bgCover) { console.log(name, image, bgCover) }
+
 	return (
-		<div className={`bg-gradient-to-r p-[3px] ${colorDefiner(400)} box-border rounded w-[18rem] h-[30rem]`}>
+		<div className={`bg-gradient-to-r p-[3px] ${colorDefiner(400)} box-border rounded w-[16.5rem] h-[27rem]`}>
 			<div className={`flex flex-col p-2 rounded-sm w-full h-full bg-gradient-to-r ${colorDefiner(100)}`}>
 				<div className="text-center text-lg font-extrabold pb-2 block opacity-100 blur-0">{name}</div>
 
@@ -144,12 +146,12 @@ export default function Card({ name, image, type, rarity, availability="none", e
 				</div>
 
 				<div className="flex flex-col w-full h-full gap-1">
-					<div className={`border-transparent bg-clip-border bg-gradient-to-r ${colorDefiner(400)} h-[178.203px] w-full overflow-hidden justify-center flex items-center p-[3px] rounded flex-grow-0`}>
-						<div className="bg-white justify-center flex items-center h-full w-full rounded-sm">
-							{bgCover ? <img src={image} className="h-full w-full object-cover flex-shrink-0 rounded-sm" /> : <img src={image} className={`${!mini ? "max-h-[80%] max-w-[80%]" : "max-h-[50%] max-w-[50%]"}`} /> }
+					<div className={`border-transparent bg-clip-border bg-gradient-to-r ${colorDefiner(400)} h-[154.203px] w-full overflow-hidden justify-center flex items-center p-[3px] rounded flex-grow-0`}>
+						<div className={`${bgCover ? "" : "bg-white"} justify-center flex items-center h-full w-full rounded-sm bg-cover bg-center`} style={{ backgroundImage: (bgCover ? `url("./img/${image}")` : undefined )}} >
+							{bgCover ? <div /> : <img src={`./img/${image}`} className={`${!mini ? "max-h-[80%] max-w-[80%]" : "max-h-[50%] max-w-[50%]"}`} /> }
 						</div>
 					</div>
-					<div className={`bg-gradient-to-r ${colorDefiner(400)} p-[3px] w-full h-[178.203px] text-[0.65rem] overflow-auto justify-center flex items-center rounded`}>
+					<div className={`bg-gradient-to-r ${colorDefiner(400)} p-[3px] w-full h-[154.203px] text-[0.58rem] overflow-auto justify-center flex items-center rounded`}>
 						<div className="bg-white w-full h-full p-2 rounded-sm">
 							<table className="h-full">
 								<tbody className="h-full">

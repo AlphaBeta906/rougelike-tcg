@@ -14,7 +14,6 @@ export type MoveContent = {
 		category?: string[] // will change later
 		subcategory?: string[] // will change later
 		numberOfCards?: number
-		
 	},
 	target?: {
 		player?: boolean // (player === true) => player & (player === false) => opponent
@@ -28,6 +27,7 @@ export type MoveContent = {
 		inputCard?: true
 		allCards?: true
 		oneCard?: true
+		inputCardTrait?: "subcategory" | "rarity"
 	},
 	action?: {
 		from: "choose" | "force"
@@ -45,6 +45,8 @@ export type MoveContent = {
 		lock?: true
 		burn?: true
 		burnDegree?: number
+		gainEnergy?: number
+		untilDestroyed?: true
 	}
 	restriction?: {
 		target?: "abilities"
@@ -161,6 +163,7 @@ export default function moveContentParser(moveContent: MoveContent) {
 
 		if (target.thisCard !== undefined) targetList.push("this card")
 		else if (target.inputCard !== undefined) targetList.push("the input card")
+		else if (target.inputCardTrait !== undefined) targetList.push(`cards that are in the same ${target.inputCardTrait} as the input card`)
 		else if ((target.specificCards !== undefined && target.specificCards.length === 1) || target.thisCard !== undefined) targetList.push("card")
 		else targetList.push("cards")
 
@@ -196,12 +199,15 @@ export default function moveContentParser(moveContent: MoveContent) {
 		if (effects.permanent !== undefined) effectsList.push("permanently")
 		else if (effects.forMoves !== undefined && effects.forMoves === 1) effectsList.push(`for this turn`)
 		else if (effects.forMoves !== undefined) effectsList.push(`for ${effects.forMoves} turns`)
+		else if (effects.untilDestroyed !== undefined) effectsList.push(`until this card is destroyed`)
 
 		if (effects.sacrifice !== undefined && effects.noRevive !== undefined) effectsList.push("will get sacrificed and can't be revived")
 		else if (effects.sacrifice !== undefined) effectsList.push("will get sacrificed")
 
 		if (effects.discardNumber !== undefined && effects.discardAndReplace !== undefined) effectsList.push(`discard and replace ${effects.discardNumber} cards from your hand`)
 		else if (effects.discardNumber !== undefined) effectsList.push(`discard ${effects.discardNumber} cards from your hand`)
+
+		else if (effects.gainEnergy !== undefined) effectsList.push(`gain ${effects.gainEnergy} energy.`)
 	}
 
 	if (restriction) {

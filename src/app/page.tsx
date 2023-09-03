@@ -4,7 +4,15 @@ import type { ReactNode } from "react";
 import type { TCard } from "@/data/cardTypes";
 
 import { useEffect, useState, useCallback } from "react";
-import { DndContext, rectIntersection, DragOverlay } from '@dnd-kit/core';
+import {
+	DndContext, 
+	rectIntersection, 
+	DragOverlay,
+	MouseSensor,
+	TouchSensor,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core';
 import { arrayMove, SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 
 import { cards } from "@/data/cards";
@@ -14,6 +22,7 @@ import Sortable from "@/components/sortable";
 import range from "@/lib/range";
 import shuffleDictionary from "@/lib/shuffleDictionary";
 import CardReduced from "@/components/cardReduced";
+import { getCategory } from "@/data/categories";
 
 export default function Home() {
 	const [isDragging, setIsDragging] = useState(false);
@@ -188,6 +197,31 @@ export default function Home() {
 							}];
 						}
 					}
+				} else if (target?.category !== undefined && effects?.powerChange !== undefined) {
+					const intersection = Object.values(tp).map(x => x.name).filter(x => target.category?.some(elem => {
+						console.log(getCategory(cards[x].category))
+						return getCategory(cards[x].category).includes(elem);
+					}))
+
+					for (const card of Object.values(tp)) {
+						const { name } = card;
+
+						if (intersection.includes(name)) {
+							const key = Object.keys(newTp).find((key) => newTp[key].name === name);
+
+							if (!key) {
+								return;
+							}
+
+							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0)
+
+							newTp[key].additionalPower = [...newTp[key].additionalPower, {
+								power: effects.powerChange + (effects.powerChange > 0 ? Math.abs(amplifierPower) : -Math.abs(amplifierPower)),
+								from: from,
+								to: name
+							}];
+						}
+					}
 				} else if (conditions?.subcategory !== undefined && conditions?.inputCard !== undefined && effects?.powerChange !== undefined) {
 					if (holder.startsWith("card-holder-")) {
 						return;
@@ -221,14 +255,60 @@ export default function Home() {
 							to: tp[key].name
 						}]
 					}
+				} else if (target?.inputCardTrait !== undefined && effects?.powerChange !== undefined) {
+					if (holder.startsWith("card-holder-")) {
+						return;
+					}
+
+					const key = holder?.replace("operator-holder-", "card-holder-")
+
+					if (tp[key] !== undefined && cardsData[key] !== undefined) {
+						const cardCategories = cardsData[key].category.split(" × ")
+
+						const intersection = Object.values(tp).map(x => x.name).filter(x => cardCategories.some(elem => cards[x].category.split(" × ").includes(elem)))
+
+						for (const card of Object.values(tp)) {
+							const { name } = card;
+
+							if (intersection.includes(name)) {
+								const key2 = Object.keys(newTp).find((key) => newTp[key].name === name);
+
+								if (!key2) {
+									return;
+								}
+
+								const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0)
+
+								newTp[key2].additionalPower = [...newTp[key2].additionalPower, {
+									power: effects.powerChange + (effects.powerChange > 0 ? Math.abs(amplifierPower) : -Math.abs(amplifierPower)),
+									from: from,
+									to: name
+								}];
+							}
+						}
+					}
+				} else if (target?.inputCard !== undefined && effects?.powerChange !== undefined) {
+					if (holder.startsWith("card-holder-")) {
+						return;
+					}
+
+					const key = holder?.replace("operator-holder-", "card-holder-")
+
+					if (tp[key] !== undefined) {
+						newTp[key].additionalPower = [...newTp[key].additionalPower, {
+							power: effects.powerChange,
+							from: from,
+							to: tp[key].name
+						}]
+					}
 				}
 			}
 		})
 		console.log("end!")
 		setTp(newTp)
-		}, [tp, dropData, cardsData, holder]);
+	}, [tp, dropData, cardsData, holder]);
 
-		const handleDragEndSortable = useCallback((event: any) => {
+	const handleDragEndSortable = useCallback((event: any) => {
 		const { active, over } = event;
 
 		if (active.id !== over?.id) {
@@ -239,9 +319,9 @@ export default function Home() {
 				return arrayMove(items, oldIndex, newIndex);
 			});
 		}
-		}, [dropData, cardsData]);
+	}, [dropData, cardsData]);
 
-		const handleDragEnd = useCallback((event: any) => {
+	const handleDragEnd = useCallback((event: any) => {
 		const { over } = event;
 
 		if (over === null) {
@@ -258,34 +338,42 @@ export default function Home() {
 
 		setIsDragging(false)
 		setActiveId(null)
-		}, [dropData, cardsData]);
+	}, [dropData, cardsData]);
 
-		const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		setReload(true)
-		};
+	};
 
-		const buttonHolderHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const buttonHolderHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		let newHolder = (holder === true ? false : true);
 		setHolder(newHolder)
-		};
+	};
 
-		useEffect(() => {
+	useEffect(() => {
 		if (reload) {
 			const newCardItems = Object.keys(shuffleDictionary(cards))
 
 			setItems(newCardItems)
 			setReload(false)
 		}
-		}, [reload])
+	}, [reload])
 
-		useEffect(() => {
+	useEffect(() => {
 		setTop(Object.values(tp).reduce((acc, { basePower, additionalPower }) => acc + basePower + additionalPower.map(x => x.power).reduce((acc, value) => acc + value, 0), 0))
 		setAdp(Object.values(tp).reduce((acc, { additionalPower }) => acc + additionalPower.map(x => x.power).reduce((acc, value) => acc + value, 0), 0))
-		}, [tp])
+	}, [tp])
 
-		return (
+	const mouseSensor = useSensor(MouseSensor);
+	const touchSensor = useSensor(TouchSensor);
+
+	const sensors = useSensors(
+		mouseSensor,
+		touchSensor,
+	);
+
+	return (
 		<>
 			<DndContext
 				onDragStart={handleDragStart}
@@ -295,6 +383,7 @@ export default function Home() {
 				}}
 				onDragEnd={handleDragEnd}
 				collisionDetection={rectIntersection}
+				sensors={sensors}
 			>
 				<div className="flex gap-2">
 					<button onClick={buttonHandler} className="rounded-xl p-2 bg-red-500 hover:bg-red-600 active:bg-red-800 transition-all delay-100 text-white font-semibold">Reload</button>
@@ -306,13 +395,13 @@ export default function Home() {
 						return (
 							<div key={id}>
 								<Droppable id={`operator-holder-${id}`} disabled={isDragging && !holder ? Object.keys(cards).filter(x => cards[x].type !== "operator").includes(activeId ?? "") : false}>
-									<div className={`w-[20rem] h-fit border-4 ${isDragging && !holder ? (Object.keys(cards).filter(x => cards[x].type !== "operator").includes(activeId ?? "") ? "border-red-400" : "border-green-400") : ""} rounded-lg m-5`}>
-										<div className="mx-3 my-3">{(`operator-holder-${id}`) in dropData ? dropData[`operator-holder-${id}` as keyof unknown] : <div className="w-[18rem] h-[5.075rem]" /> as ReactNode}</div>
+									<div className={`w-[18.5rem] h-fit border-4 ${isDragging && !holder ? (Object.keys(cards).filter(x => cards[x].type !== "operator").includes(activeId ?? "") ? "border-red-400" : "border-green-400") : ""} rounded-lg m-5`}>
+										<div className="mx-3 my-3">{(`operator-holder-${id}`) in dropData ? dropData[`operator-holder-${id}` as keyof unknown] : <div className="w-[16.5rem] h-[5.075rem]" /> as ReactNode}</div>
 									</div>
 								</Droppable>
 								<Droppable id={`card-holder-${id}`} disabled={!(isDragging && holder)}>
-									<div className={`w-[20rem] h-[32rem] border-4 ${isDragging && holder ? "border-green-400" : ""} rounded-lg m-5`}>
-										<div className="mx-3 my-3">{(`card-holder-${id}`) in dropData ? dropData[`card-holder-${id}` as keyof unknown] : <div className="w-[18rem] h-[30rem]" /> as ReactNode}</div>
+									<div className={`w-[18.5rem] h-[29rem] border-4 ${isDragging && holder ? "border-green-400" : ""} rounded-lg m-5`}>
+										<div className="mx-3 my-3">{(`card-holder-${id}`) in dropData ? dropData[`card-holder-${id}` as keyof unknown] : <div className="w-[16.5rem] h-[27rem]" /> as ReactNode}</div>
 									</div>
 								</Droppable>
 							</div>
@@ -339,7 +428,7 @@ export default function Home() {
 					})}
 				</ul>
 
-				<div className="grid gap-2 grid-cols-4 w-fit">
+				<div className="grid gap-2 grid-cols-5 w-fit">
 					<SortableContext items={items} strategy={rectSortingStrategy}>
 						{items.map((id) => (
 							<Sortable id={id} key={id} className={`shadow-xl ${id === activeId ? "opacity-0" : ""}`}>
