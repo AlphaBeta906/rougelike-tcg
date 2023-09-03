@@ -430,8 +430,8 @@ export default function Home() {
 
 				<div className="grid gap-2 grid-cols-5 w-fit">
 					<SortableContext items={items} strategy={rectSortingStrategy}>
-						{items.map((id) => (
-							<Sortable id={id} key={id} className={`shadow-xl ${id === activeId ? "opacity-0" : ""}`}>
+						{items.map((id, index) => (
+							<Sortable id={id} key={id} className={`shadow-xl ${id === activeId ? "opacity-0" : ""}`} style={{ zValue: ((index % 5) + 1) * 10}}>
 								<Card
 									{...cards[id]}
 									name={id}
