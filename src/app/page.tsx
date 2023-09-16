@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import type { ReactNode } from "react";
 import type { TCard } from "@/data/cardTypes";
@@ -12,8 +12,8 @@ import {
 	TouchSensor,
 	useSensor,
 	useSensors,
-} from '@dnd-kit/core';
-import { arrayMove, SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
+} from "@dnd-kit/core";
+import { arrayMove, SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 
 import { cards } from "@/data/cards";
 import Card from "@/components/card";
@@ -45,33 +45,24 @@ export default function Home() {
 	const [holder, setHolder] = useState(true);
 	const [items, setItems] = useState<string[]>([]);
 
-	useEffect(() => {
-		console.log("Initial tp:", tp);
-	}, []);
 	useEffect(() => console.log("Tp update:", tp), [tp]);
-
-	useEffect(() => {
-		console.log("Initial cardsData:", cardsData);
-	}, []);
 	useEffect(() => console.log("cardsData update:", cardsData), [cardsData]);
-
-	useEffect(() => {
-		console.log("holder cardsData:", holder);
-	}, []);
 	useEffect(() => console.log("holder update:", holder), [holder]);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleDragStart = useCallback((event: any) => {
 		const { active } = event;
 
-		setIsDragging(true)
+		setIsDragging(true);
 		setActiveId(active.id);
-	}, [isDragging, activeId])
+	}, []);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleDragEndDrop = useCallback((event: any) => {
 		const { active, over } = event;
 
 		const card = active.id;
-		const cardData = cards[card]
+		const cardData = cards[card];
 
 		let newTp = tp;
 		newTp[over.id] = {
@@ -79,9 +70,13 @@ export default function Home() {
 			basePower: cardData.power,
 			additionalPower: [],
 			amplifier: []
+		};
+		console.log(newTp);
+		setTp(newTp);
+
+		if (over.id.startsWith("operator-holder-") && !(Object.keys(cards).filter(x => cards[x].type === "operator").includes(active.id ?? ""))) {
+			return;
 		}
-		console.log(newTp)
-		setTp(newTp)
 
 		setDropData({
 			...dropData,
@@ -92,14 +87,14 @@ export default function Home() {
 				name={card}
 				{...cards[card]}
 			/>)
-		})
+		});
 
-		let newCardsData: { [key: string]: TCard } = { ...cardsData }
+		const newCardsData: { [key: string]: TCard } = { ...cardsData };
 		newCardsData[over.id] = {
 			...cards[card],
 			name: card
-		}
-		setCardsData(newCardsData)
+		};
+		setCardsData(newCardsData);
 
 		newTp = {};
 		Object.keys(tp).forEach((key) => {
@@ -111,12 +106,12 @@ export default function Home() {
 		});
 
 		const allMoves = Object.values(tp).map(x => {
-			return { moves: cards[x.name].moves, from: x.name }
-		})
+			return { moves: cards[x.name].moves, from: x.name };
+		});
 
 		allMoves.sort((a, b) => {
-			let a2 = Object.keys(tp).find((val) => tp[val].name === a.from) ?? "";
-			let b2 = Object.keys(tp).find((val) => tp[val].name === b.from) ?? "";
+			const a2 = Object.keys(tp).find((val) => tp[val].name === a.from) ?? "";
+			const b2 = Object.keys(tp).find((val) => tp[val].name === b.from) ?? "";
 
 			const aIndex = parseInt(a2.split("-")[2]);
 			const bIndex = parseInt(b2.split("-")[2]);
@@ -136,16 +131,16 @@ export default function Home() {
 		const takenList: string[] = [];
 
 		allMoves.forEach(movesOrg => {
-			const { moves, from } = movesOrg
+			const { moves, from } = movesOrg;
 			const holder = Object.keys(tp).find((val) => tp[val].name === from && !(takenList.includes(val))) ?? "";
-			takenList.push(holder)
+			takenList.push(holder);
 
 			for (const move of moves) {
 				if (!move?.moveContent) {
 					continue;
 				}
 
-				const moveData = move.moveContent
+				const moveData = move.moveContent;
 
 				const { conditions, target, effects } = moveData;
 
@@ -154,7 +149,7 @@ export default function Home() {
 					const cardNames = Object.values(tp).map((x) => x.name);
 					const intersection = specificCards.filter((x) => cardNames.includes(x));
 
-					console.log(intersection)
+					console.log(intersection);
 
 					for (const card of Object.values(tp)) {
 						const { name } = card;
@@ -166,7 +161,7 @@ export default function Home() {
 								return;
 							}
 
-							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0)
+							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0);
 
 							newTp[key].additionalPower = [...newTp[key].additionalPower, {
 								power: effects.powerChange + (effects.powerChange > 0 ? Math.abs(amplifierPower) : -Math.abs(amplifierPower)),
@@ -176,7 +171,7 @@ export default function Home() {
 						}
 					}
 				} else if (target?.subcategory !== undefined && effects?.powerChange !== undefined) {
-					const intersection = Object.values(tp).map(x => x.name).filter(x => target.subcategory?.some(elem => cards[x].category.split(" × ").includes(elem)))
+					const intersection = Object.values(tp).map(x => x.name).filter(x => target.subcategory?.some(elem => cards[x].category.split(" × ").includes(elem)));
 
 					for (const card of Object.values(tp)) {
 						const { name } = card;
@@ -188,7 +183,7 @@ export default function Home() {
 								return;
 							}
 
-							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0)
+							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0);
 
 							newTp[key].additionalPower = [...newTp[key].additionalPower, {
 								power: effects.powerChange + (effects.powerChange > 0 ? Math.abs(amplifierPower) : -Math.abs(amplifierPower)),
@@ -199,9 +194,9 @@ export default function Home() {
 					}
 				} else if (target?.category !== undefined && effects?.powerChange !== undefined) {
 					const intersection = Object.values(tp).map(x => x.name).filter(x => target.category?.some(elem => {
-						console.log(getCategory(cards[x].category))
+						console.log(getCategory(cards[x].category));
 						return getCategory(cards[x].category).includes(elem);
-					}))
+					}));
 
 					for (const card of Object.values(tp)) {
 						const { name } = card;
@@ -213,7 +208,7 @@ export default function Home() {
 								return;
 							}
 
-							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0)
+							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0);
 
 							newTp[key].additionalPower = [...newTp[key].additionalPower, {
 								power: effects.powerChange + (effects.powerChange > 0 ? Math.abs(amplifierPower) : -Math.abs(amplifierPower)),
@@ -227,12 +222,12 @@ export default function Home() {
 						return;
 					}
 
-					const intersection = Object.values(tp).map(x => x.name).filter(x => conditions.subcategory?.some(elem => cards[x].category.split(" × ").includes(elem)))
-					const key = holder?.replace("operator-holder-", "card-holder-")
+					const intersection = Object.values(tp).map(x => x.name).filter(x => conditions.subcategory?.some(elem => cards[x].category.split(" × ").includes(elem)));
+					const key = holder?.replace("operator-holder-", "card-holder-");
 
 					if (tp[key] !== undefined) {
 						if (intersection.includes(tp[key].name)) {
-							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0)
+							const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0);
 
 							newTp[key].additionalPower = [...newTp[key].additionalPower, {
 								power: effects.powerChange + (effects.powerChange > 0 ? Math.abs(amplifierPower) : -Math.abs(amplifierPower)),
@@ -246,26 +241,26 @@ export default function Home() {
 						return;
 					}
 
-					const key = holder?.replace("operator-holder-", "card-holder-")
+					const key = holder?.replace("operator-holder-", "card-holder-");
 
 					if (tp[key] !== undefined) {
 						newTp[key].amplifier = [...newTp[key].amplifier, {
 							power: effects.amplify,
 							from: from,
 							to: tp[key].name
-						}]
+						}];
 					}
 				} else if (target?.inputCardTrait !== undefined && effects?.powerChange !== undefined) {
 					if (holder.startsWith("card-holder-")) {
 						return;
 					}
 
-					const key = holder?.replace("operator-holder-", "card-holder-")
+					const key = holder?.replace("operator-holder-", "card-holder-");
 
 					if (tp[key] !== undefined && cardsData[key] !== undefined) {
-						const cardCategories = cardsData[key].category.split(" × ")
+						const cardCategories = cardsData[key].category.split(" × ");
 
-						const intersection = Object.values(tp).map(x => x.name).filter(x => cardCategories.some(elem => cards[x].category.split(" × ").includes(elem)))
+						const intersection = Object.values(tp).map(x => x.name).filter(x => cardCategories.some(elem => cards[x].category.split(" × ").includes(elem)));
 
 						for (const card of Object.values(tp)) {
 							const { name } = card;
@@ -277,7 +272,7 @@ export default function Home() {
 									return;
 								}
 
-								const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0)
+								const amplifierPower = newTp[holder].amplifier.reduce((acc, { power }) => acc + power, 0);
 
 								newTp[key2].additionalPower = [...newTp[key2].additionalPower, {
 									power: effects.powerChange + (effects.powerChange > 0 ? Math.abs(amplifierPower) : -Math.abs(amplifierPower)),
@@ -292,22 +287,23 @@ export default function Home() {
 						return;
 					}
 
-					const key = holder?.replace("operator-holder-", "card-holder-")
+					const key = holder?.replace("operator-holder-", "card-holder-");
 
 					if (tp[key] !== undefined) {
 						newTp[key].additionalPower = [...newTp[key].additionalPower, {
 							power: effects.powerChange,
 							from: from,
 							to: tp[key].name
-						}]
+						}];
 					}
 				}
 			}
-		})
-		console.log("end!")
-		setTp(newTp)
-	}, [tp, dropData, cardsData, holder]);
+		});
+		console.log("end!");
+		setTp(newTp);
+	}, [tp, dropData, cardsData]);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleDragEndSortable = useCallback((event: any) => {
 		const { active, over } = event;
 
@@ -319,51 +315,52 @@ export default function Home() {
 				return arrayMove(items, oldIndex, newIndex);
 			});
 		}
-	}, [dropData, cardsData]);
+	}, []);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleDragEnd = useCallback((event: any) => {
 		const { over } = event;
 
 		if (over === null) {
-			setIsDragging(false)
-			setActiveId(null)
+			setIsDragging(false);
+			setActiveId(null);
 			return;
 		}
 
 		if (over.id.startsWith("card-holder-") || over.id.startsWith("operator-holder-")) {
-			handleDragEndDrop(event)
+			handleDragEndDrop(event);
 		} else {
-			handleDragEndSortable(event)
+			handleDragEndSortable(event);
 		}
 
-		setIsDragging(false)
-		setActiveId(null)
-	}, [dropData, cardsData]);
+		setIsDragging(false);
+		setActiveId(null);
+	}, [handleDragEndDrop, handleDragEndSortable]);
 
 	const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		setReload(true)
+		setReload(true);
 	};
 
 	const buttonHolderHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		let newHolder = (holder === true ? false : true);
-		setHolder(newHolder)
+		const newHolder = (holder === true ? false : true);
+		setHolder(newHolder);
 	};
 
 	useEffect(() => {
 		if (reload) {
-			const newCardItems = Object.keys(shuffleDictionary(cards))
+			const newCardItems = Object.keys(shuffleDictionary(cards));
 
-			setItems(newCardItems)
-			setReload(false)
+			setItems(newCardItems);
+			setReload(false);
 		}
-	}, [reload])
+	}, [reload]);
 
 	useEffect(() => {
-		setTop(Object.values(tp).reduce((acc, { basePower, additionalPower }) => acc + basePower + additionalPower.map(x => x.power).reduce((acc, value) => acc + value, 0), 0))
-		setAdp(Object.values(tp).reduce((acc, { additionalPower }) => acc + additionalPower.map(x => x.power).reduce((acc, value) => acc + value, 0), 0))
-	}, [tp])
+		setTop(Object.values(tp).reduce((acc, { basePower, additionalPower }) => acc + basePower + additionalPower.map(x => x.power).reduce((acc, value) => acc + value, 0), 0));
+		setAdp(Object.values(tp).reduce((acc, { additionalPower }) => acc + additionalPower.map(x => x.power).reduce((acc, value) => acc + value, 0), 0));
+	}, [tp]);
 
 	const mouseSensor = useSensor(MouseSensor);
 	const touchSensor = useSensor(TouchSensor);
@@ -378,7 +375,7 @@ export default function Home() {
 			<DndContext
 				onDragStart={handleDragStart}
 				onDragCancel={() => {
-					setIsDragging(false)
+					setIsDragging(false);
 					setActiveId(null);
 				}}
 				onDragEnd={handleDragEnd}
@@ -394,18 +391,18 @@ export default function Home() {
 					{range(1, 3).map((id) => {
 						return (
 							<div key={id}>
-								<Droppable id={`operator-holder-${id}`} disabled={isDragging && !holder ? Object.keys(cards).filter(x => cards[x].type !== "operator").includes(activeId ?? "") : false}>
+								<Droppable id={`operator-holder-${id}`} disabled={!holder ? Object.keys(cards).filter(x => cards[x].type !== "operator").includes(activeId ?? "") : false}>
 									<div className={`w-[18.5rem] h-fit border-4 ${isDragging && !holder ? (Object.keys(cards).filter(x => cards[x].type !== "operator").includes(activeId ?? "") ? "border-red-400" : "border-green-400") : ""} rounded-lg m-5`}>
 										<div className="mx-3 my-3">{(`operator-holder-${id}`) in dropData ? dropData[`operator-holder-${id}` as keyof unknown] : <div className="w-[16.5rem] h-[5.075rem]" /> as ReactNode}</div>
 									</div>
 								</Droppable>
-								<Droppable id={`card-holder-${id}`} disabled={!(isDragging && holder)}>
+								<Droppable id={`card-holder-${id}`} disabled={!(holder)}>
 									<div className={`w-[18.5rem] h-[29rem] border-4 ${isDragging && holder ? "border-green-400" : ""} rounded-lg m-5`}>
 										<div className="mx-3 my-3">{(`card-holder-${id}`) in dropData ? dropData[`card-holder-${id}` as keyof unknown] : <div className="w-[16.5rem] h-[27rem]" /> as ReactNode}</div>
 									</div>
 								</Droppable>
 							</div>
-						)
+						);
 					})}
 				</div>
 
@@ -414,17 +411,17 @@ export default function Home() {
 				<ul className="list-inside">
 					{Object.values(tp).map(x => x.amplifier).flat().map(({ power, from, to }, index) => {
 						return (
-							<li key={index} className={`font-semibold text-violet-500`}>
+							<li key={index} className={"font-semibold text-violet-500"}>
 								× {from} amplifies {to} by {power} power
 							</li>
-						)
+						);
 					})}
 					{Object.values(tp).map(x => x.additionalPower).flat().map(({ power, from, to }, index) => {
 						return (
 							<li key={index} className={`font-semibold ${power > 0 ? "text-emerald-500" : "text-red-500"}`}>
 								{power > 0 ? "+" : "-"} {to} {power > 0 ? "gains" : "loses"} {power} power from {from}
 							</li>
-						)
+						);
 					})}
 				</ul>
 
@@ -445,5 +442,5 @@ export default function Home() {
 				</DragOverlay>
 			</DndContext>
 		</>
-	)
+	);
 }

@@ -57,6 +57,7 @@ export const categories: Record<string, CategoryData> = {
 		categories: [
 			"Irrationals",
 			"Sequences",
+			"Analysis of Algorithms"
 		]
 	},
 	"Natural Sciences": {
@@ -67,7 +68,9 @@ export const categories: Record<string, CategoryData> = {
 			"Quantum Mechanics",
 			"Medicine",
 			"Beyond the Standard Model",
-			"Alchemy"
+			"Alchemy",
+			"Elements of the Periodic Table",
+			"Greenhouse Gasses"
 		]
 	},
 	"Applied Sciences": {
@@ -75,7 +78,8 @@ export const categories: Record<string, CategoryData> = {
 		categories: [
 			"Quantum Computing",
 			"Spices",
-			"Early Technology"
+			"Early Technology",
+			"Cereal Grains"
 		]
 	},
 	"The Arts": {
@@ -94,7 +98,13 @@ export const categories: Record<string, CategoryData> = {
 			"Poetic Devices"
 		]
 	},
-	"History & Geography": {
+	"Geography": {
+		color: "purple",
+		categories: [
+			"Military Geography"
+		]
+	},
+	"History": {
 		color: "violet",
 		categories: [
 			"Historical Libraries",
@@ -102,13 +112,13 @@ export const categories: Record<string, CategoryData> = {
 			"Aerial Warfare"
 		]
 	},
-}
+};
 
 export function getCategoryColors(categoryFindName: string): string[] {
 	interface Dict {
 		[key: number]: string;
 	}
-	  
+
 	const categoriesToFind = categoryFindName.split(" × ");
 	let colors: Dict = {};
 
@@ -121,23 +131,25 @@ export function getCategoryColors(categoryFindName: string): string[] {
 			colors = {
 				...colors,
 				[categoriesToFind.findIndex(category => category === subcategory)]: currentCategory.color
-			}
+			};
 		}
 	}
 
 	if (Object.keys(colors).length === 0) {
 		return ["gray"];
-	} else if (Object.keys(colors).length !== categoriesToFind.length) {
+	}
+	
+	if (Object.keys(colors).length !== categoriesToFind.length) {
 		for (let i = 0; i < categoriesToFind.length; i++) {
 			if (!(i in colors)) {
-				colors[i] = 'gray';
+				colors[i] = "gray";
 			}
 		}
 
-		return Object.values(colors)
-	} else {
-		return Object.values(colors)
+		return Object.values(colors);
 	}
+	
+	return Object.values(colors);
 }
 
 export function getCategory(categoryFindName: string): string[] {	  
@@ -153,13 +165,13 @@ export function getCategory(categoryFindName: string): string[] {
 			colors = [
 				...colors,
 				categoryName
-			]
+			];
 		}
 	}
 
 	if (Object.keys(colors).length === 0) {
 		return [];
 	} else {
-		return Object.values(colors)
+		return Object.values(colors);
 	}
 }

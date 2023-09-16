@@ -1,4 +1,4 @@
-import { CardData } from "./cardTypes"
+import { CardData } from "./cardTypes";
 
 export const cards: Record<string, CardData> = {
 	"Peak-and-Trough Analysis": {
@@ -107,178 +107,6 @@ export const cards: Record<string, CardData> = {
 			}
 		],
 		category: "Alcohols"
-	},
-	"GreenCross": {
-		image: "greencross.png",
-		type: "combatant",
-		rarity: "legendary",
-		availability: "limited",
-		energy: 8,
-		power: 60,
-		moves: [
-			{
-				type: "draw",
-				description: "All sanitizer alcohols in your deck, wherever they are, gain 40 power for 10 moves.",
-				moveContent: {
-					target: {
-						player: true,
-						subcategory: ["Alcohol"]
-					},
-					effects: {
-						powerChange: 40,
-						forMoves: 10
-					}
-				}
-			},
-			{
-				type: "end turn",
-				description: "If your enemy drew Biogenic Alcohol, this card loses 60 power.",
-				moveContent: {
-					conditions: {
-						player: false,
-						playerAction: "draw",
-						specificCardForAction: ["Biogenic Alcohol"]
-					},
-					target: {
-						thisCard: true,
-						anywhere: true
-					},
-					effects: {
-						sacrifice: true
-					}
-				}
-			}
-		],
-		category: "Companies × Alcohols"
-	},
-	"Biogenic Alcohol": {
-		image: "biogenic.png",
-		type: "combatant",
-		rarity: "legendary",
-		availability: "limited",
-		energy: 8,
-		power: 60,
-		moves: [
-			{
-				type: "draw",
-				description: "All sanitizer alcohols in your deck, wherever they are, gain 40 power for 10 moves.",
-				moveContent: {
-					target: {
-						player: true,
-						subcategory: ["Alcohol"]
-					},
-					effects: {
-						powerChange: 20,
-						permanent: true
-					}
-				}
-			},
-			{
-				type: "end turn",
-				description: "If your enemy drew GreenCross, this card loses 60 power.",
-				moveContent: {
-					conditions: {
-						player: false,
-						playerAction: "draw",
-						specificCardForAction: ["Green Cross"]
-					},
-					target: {
-						thisCard: true,
-						anywhere: true
-					},
-					effects: {
-						sacrifice: true
-					}
-				}
-			}
-		],
-		category: "Companies × Alcohols",
-	},
-	"Paracetamol Biogesic": {
-		image: "paracetamol-biogesic.png",
-		type: "combatant",
-		rarity: "epic",
-		energy: 10,
-		power: 57,
-		moves: [
-			{
-				type: "draw",
-				description: "Flip a coin. If it lands on heads, your opponent's Biogenic Alcohol will lose all its power and be discarded.",
-				moveContent: {
-					conditions: {
-						coinFlip: "heads"
-					},
-					target: {
-						player: false,
-						anywhere: true,
-						specificCards: ["Biogenic Alcohol"]
-					},
-					effects: {
-						sacrifice: true
-					}
-				}
-			},
-			{
-				type: "draw",
-				description: "Flip a coin. If it lands on tails, this card will lose all its power and be discarded.",
-				moveContent: {
-					conditions: {
-						coinFlip: "tails"
-					},
-					target: {
-						player: true,
-						thisCard: true
-					},
-					effects: {
-						sacrifice: true
-					}
-				}
-			}
-		],
-		category: "Companies × Medicine"
-	},
-	"Asteraforte": {
-		image: "asteraforte.png",
-		type: "combatant",
-		rarity: "epic",
-		energy: 10,
-		power: 57,
-		moves: [
-			{
-				type: "draw",
-				description: "Flip a coin. If it lands on heads, your opponent's Paracetamol Biogesic will lose all its power and be discarded.",
-				moveContent: {
-					conditions: {
-						coinFlip: "heads"
-					},
-					target: {
-						player: false,
-						anywhere: true,
-						specificCards: ["Paracetamol Biogesic"]
-					},
-					effects: {
-						sacrifice: true
-					}
-				}
-			},
-			{
-				type: "draw",
-				description: "Flip a coin. If it lands on tails, this card will lose all its power and be discarded.",
-				moveContent: {
-					conditions: {
-						coinFlip: "tails"
-					},
-					target: {
-						player: true,
-						thisCard: true
-					},
-					effects: {
-						sacrifice: true
-					}
-				}
-			}
-		],
-		category: "Medicine"
 	},
 	"Plagiarism": {
 		image: "plagiarism.png",
@@ -499,7 +327,7 @@ export const cards: Record<string, CardData> = {
 		bgCover: true,
 		type: "combatant",
 		rarity: "rare",
-		energy: 11,
+		energy: 6,
 		power: 61,
 		moves: [
 			{
@@ -1063,7 +891,7 @@ export const cards: Record<string, CardData> = {
 		moves: [
 			{
 				type: "play",
-				description: 'Your cards that contains "ae", will gain 40 power for this turn.',
+				description: "Your cards that contains \"ae\", will gain 40 power for this turn.",
 			}
 		],
 		category: "Old English Letters"
@@ -1079,7 +907,7 @@ export const cards: Record<string, CardData> = {
 		moves: [
 			{
 				type: "play",
-				description: '.',
+				description: ".",
 				moveContent: {
 					target: {
 						inputCard: true
@@ -1375,4 +1203,212 @@ export const cards: Record<string, CardData> = {
 		],
 		category: "Greek Letters"
 	},
-}
+	"Big-Omega Notation": {
+		image: "big-omega-notation.png",
+		type: "effect",
+		rarity: "legendary",
+		energy: 0,
+		power: 0,
+		moves: [
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						hand: true
+					},
+					effects: {
+						powerChange: 16,
+						untilReturned: true
+					}
+				}
+			}
+		],
+		category: "Analysis of Algorithms"
+	},
+	"Big-O Notation": {
+		image: "big-o-notation.png",
+		type: "effect",
+		rarity: "rare",
+		availability: "limited",
+		energy: 4,
+		power: 34,
+		moves: [
+			{
+				type: "return",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						resources: true
+					},
+					effects: {
+						augment: 1
+					}
+				}
+			}
+		],
+		category: "Analysis of Algorithms"
+	},
+	"Wheat": {
+		image: "wheat.png",
+		bgCover: true,
+		type: "combatant",
+		rarity: "common",
+		energy: 3,
+		power: 22,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						subcategory: ["Ancient Civilizations", "Cereal Grains"]
+					},
+					effects: {
+						powerChange: 7
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						subcategory: ["Starches"]
+					},
+					effects: {
+						powerChange: 10
+					}
+				}
+			}
+		],
+		category: "Cereal Grains"
+	},
+	"Oxygen": {
+		image: "oxygen.png",
+		type: "combatant",
+		rarity: "common",
+		energy: 4,
+		power: 27,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						category: ["Biology"]
+					},
+					effects: {
+						powerChange: 6
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						specificCards: ["Water", "Ozone"]
+					},
+					effects: {
+						powerChange: 12
+					}
+				}
+			}
+		],
+		category: "Elements of the Periodic Table"
+	},
+	"Choke Point": {
+		image: "choke-point.png",
+		bgCover: true,
+		type: "combatant",
+		rarity: "legendary",
+		energy: 9,
+		power: 7,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: false,
+						hand: true
+					},
+					action: {
+						action: "lock",
+						from: "choose",
+						forMoves: 1
+					}
+				}
+			},
+		],
+		category: "Military Geography"
+	},
+	"Carbon Dioxide": {
+		image: "carbon-dioxide.png",
+		type: "combatant",
+		rarity: "epic",
+		energy: 4,
+		power: 61,
+		moves: [
+			{
+				type: "start",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						hand: true
+					},
+					effects: {
+						powerChange: -20,
+						untilReturned: true
+					}
+				}
+			},
+		],
+		category: "Greenhouse Gasses"
+	},
+	"Maize": {
+		image: "maize.png",
+		bgCover: true,
+		type: "combatant",
+		rarity: "rare",
+		energy: 4,
+		power: 45,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						specificCards: ["Maya Civilization", "Aztec Empire", "Inca Empire"]
+					},
+					effects: {
+						powerChange: 7
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						subcategory: ["Starches"]
+					},
+					effects: {
+						powerChange: 10
+					}
+				}
+			}
+		],
+		category: "Cereal Grains"
+	},
+};

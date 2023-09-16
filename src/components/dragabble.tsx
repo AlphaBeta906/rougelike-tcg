@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { useDraggable } from "@dnd-kit/core";
-import { CSS } from '@dnd-kit/utilities';
+import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
 	id: string

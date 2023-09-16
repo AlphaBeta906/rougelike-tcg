@@ -1,3 +1,3 @@
 export default function dynamicClasses(classes: string) {
-	return [classes].join("")
+	return [classes].join("");
 }

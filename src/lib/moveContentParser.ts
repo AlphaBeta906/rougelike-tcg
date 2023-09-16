@@ -8,7 +8,7 @@ export type MoveContent = {
 		coinFlip?: "heads" | "tails"
 		player?: boolean
 		anyone?: true
-		playerAction?: "draw" | "sacrifice"
+		playerAction?: "draw" | "sacrifice" | "lock"
 		specificCardForAction?: string[]
 		inputCard?: true
 		category?: string[] // will change later
@@ -28,16 +28,20 @@ export type MoveContent = {
 		allCards?: true
 		oneCard?: true
 		inputCardTrait?: "subcategory" | "rarity"
+		resources?: true
 	},
 	action?: {
 		from: "choose" | "force"
-		action: "imitate" | "sacrifice"
+		action: "imitate" | "sacrifice" | "lock"
+		forMoves?: number
 	}
 	effects?: {
 		powerChange?: number
 		amplify?: number
+		augment?: number
 		permanent?: true
 		forMoves?: number
+		untilReturned?: true
 		sacrifice?: true
 		discardNumber?: number | "all"
 		discardAndReplace?: true
@@ -55,20 +59,20 @@ export type MoveContent = {
 	}
 }
 
-function formatList(list: Array<any>, conjunction: string) {
+function formatList(list: Array<string>, conjunction: string) {
 	if (list.length === 0) {
 		return "";
 	} else if (list.length === 1) {
 		return list[0];
 	} else if (list.length === 2) {
-		return list.join(` ${conjunction} `)
+		return list.join(` ${conjunction} `);
 	} else {
 		return list.slice(0, -1).join(", ") + `, ${conjunction} ` + list.slice(-1);
 	}
 }
 
 function formatText(input: string): string {
-	const sentences = input.split('. ');
+	const sentences = input.split(". ");
 	const formattedSentences = sentences.map((sentence) => {
 		const trimmedSentence = sentence.trim();
 		if (trimmedSentence) {
@@ -76,61 +80,61 @@ function formatText(input: string): string {
 			const restOfSentence = trimmedSentence.slice(1);
 			return firstChar + restOfSentence;
 		}
-		return '';
+		return "";
 	});
 
-	return formattedSentences.join('. ').replace(/ ,/g, ',').replace(/\s+/g, ' ');
+	return formattedSentences.join(". ").replace(/ ,/g, ",").replace(/\s+/g, " ");
 }
 
 
 export default function moveContentParser(moveContent: MoveContent) {
 	// Note to self: Move descriptions follow order "If {conditions}, {target} {effects}"
-	const { conditions, target, action, effects, restriction } = moveContent
+	const { conditions, target, action, effects, restriction } = moveContent;
 	let conditionsText, restrictionsText = "";
-	let targetList: Array<string> = [];
-	let effectsList: Array<string> = [];
+	const targetList: Array<string> = [];
+	const effectsList: Array<string> = [];
 
 	// Conditions parser
 	if (conditions !== undefined) {
-		if (conditions.winning !== undefined) conditionsText = "If you're winning"
-		else if (conditions.wonRound !== undefined) conditionsText = "If you won the round"
-		else if (conditions.losing !== undefined) conditionsText = "If you're losing"
-		else if (conditions.lostRound !== undefined) conditionsText = "If you lost the round"
-		else if (conditions.handSize !== undefined) conditionsText = `If your hand has ${conditions.handSize} cards`
-		else if (conditions.coinFlip !== undefined) conditionsText = `Flip a coin. If it lands on ${conditions.coinFlip}`
+		if (conditions.winning !== undefined) conditionsText = "If you're winning";
+		else if (conditions.wonRound !== undefined) conditionsText = "If you won the round";
+		else if (conditions.losing !== undefined) conditionsText = "If you're losing";
+		else if (conditions.lostRound !== undefined) conditionsText = "If you lost the round";
+		else if (conditions.handSize !== undefined) conditionsText = `If your hand has ${conditions.handSize} cards`;
+		else if (conditions.coinFlip !== undefined) conditionsText = `Flip a coin. If it lands on ${conditions.coinFlip}`;
 		else if (conditions.player !== undefined && conditions.player !== undefined) {
-			let playerPossesive = conditions.player ? "your" : "your opponent's"
-			let player = conditions.player ? "you" : "your opponent"
+			const playerPossesive = conditions.player ? "your" : "your opponent's";
+			const player = conditions.player ? "you" : "your opponent";
 
 			switch (conditions.playerAction) {
 				case "draw":
-					conditionsText = `If ${player} drew ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"}`
+					conditionsText = `If ${player} drew ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"}`;
 					break;
 				case "sacrifice":
-					conditionsText = `If ${conditions.specificCardForAction !== undefined ? "one of" : ""} ${playerPossesive} ${conditions.specificCardForAction !== undefined ? `${formatList(conditions.specificCardForAction, "or")} card` : "cards"} gets sacrificed`
+					conditionsText = `If ${conditions.specificCardForAction !== undefined ? "one of" : ""} ${playerPossesive} ${conditions.specificCardForAction !== undefined ? `${formatList(conditions.specificCardForAction, "or")} card` : "cards"} gets sacrificed`;
 					break;
 			}
 		}
 		else if (conditions.anyone !== undefined) {
 			switch (conditions.playerAction) {
 				case "draw":
-					conditionsText = `If someone drew ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"}`
+					conditionsText = `If someone drew ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"}`;
 					break;
 				case "sacrifice":
-					conditionsText = `If ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"} sacrificed`
+					conditionsText = `If ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"} sacrificed`;
 					break;
 			}
 		}
 		else if (conditions.inputCard !== undefined) {
-			let categoryList: Array<string> = []
-			let categoryName = ""
+			let categoryList: Array<string> = [];
+			let categoryName = "";
 
 			if (conditions.category !== undefined) {
-				categoryList = conditions.category
-				categoryName = "category"
+				categoryList = conditions.category;
+				categoryName = "category";
 			} else if (conditions.subcategory !== undefined) {
-				categoryList = conditions.subcategory
-				categoryName = "subcategory"
+				categoryList = conditions.subcategory;
+				categoryName = "subcategory";
 			}
 
 			conditionsText = `If the input card is part of the ${formatList(categoryList, "or")} ${categoryName}`;
@@ -141,73 +145,77 @@ export default function moveContentParser(moveContent: MoveContent) {
 	if (action) {
 		switch (action.from) {
 			case "choose": 
-				targetList.push("Choose one of") 
-				break
+				targetList.push("Choose one of"); 
+				break;
 			case "force": 
-				targetList.push("Force your opponent to choose")
-				break
+				targetList.push("Force your opponent to choose");
+				break;
 		}
 	}
 
 	// Target parser
 	if (target) {
-		if (target.allCards !== undefined) targetList.push("all of")
-		if (target.oneCard !== undefined) targetList.push("one of")
+		if (target.allCards !== undefined) targetList.push("all of");
+		if (target.oneCard !== undefined) targetList.push("one of");
 
-		if (target.player !== undefined) targetList.push(target.player ? "your" : (action?.from === "force" ? "their" : "your opponent's"))
-		else if (target.everyone !== undefined) targetList.push("all")
+		if (target.player !== undefined) targetList.push(target.player ? "your" : (action?.from === "force" ? "their" : "your opponent's"));
+		else if (target.everyone !== undefined) targetList.push("all");
 
-		if (target.specificCards !== undefined) targetList.push(formatList(target.specificCards, "and"))
-		else if (target.category !== undefined) targetList.push(formatList(target.category, "and"))
-		else if (target.subcategory !== undefined) targetList.push(formatList(target.subcategory, "and"))
+		if (target.specificCards !== undefined) targetList.push(formatList(target.specificCards, "and"));
+		else if (target.category !== undefined) targetList.push(formatList(target.category, "and"));
+		else if (target.subcategory !== undefined) targetList.push(formatList(target.subcategory, "and"));
 
-		if (target.thisCard !== undefined) targetList.push("this card")
-		else if (target.inputCard !== undefined) targetList.push("the input card")
-		else if (target.inputCardTrait !== undefined) targetList.push(`cards that are in the same ${target.inputCardTrait} as the input card`)
-		else if ((target.specificCards !== undefined && target.specificCards.length === 1) || target.thisCard !== undefined) targetList.push("card")
-		else targetList.push("cards")
+		if (target.thisCard !== undefined) targetList.push("this card");
+		else if (target.inputCard !== undefined) targetList.push("the input card");
+		else if (target.inputCardTrait !== undefined) targetList.push(`cards that are in the same ${target.inputCardTrait} as the input card`);
+		else if ((target.specificCards !== undefined && target.specificCards.length === 1) || target.thisCard !== undefined) targetList.push("card");
+		else if (target.resources !== undefined) targetList.push("resource cards in play");
+		else targetList.push("cards");
 
-		if (target.hand !== undefined) targetList.push("in hand")
-		else if (target.anywhere !== undefined) targetList.push(", wherever it is,")
+		if (target.hand !== undefined) targetList.push("in hand");
+		else if (target.anywhere !== undefined) targetList.push(", wherever it is,");
 	}
 
 	// Action parser 2
 	if (action) {
 		switch (action.action) {
 			case "imitate": 
-				targetList.push("to imitate a move from")
-				break
+				targetList.push("to imitate a move from");
+				break;
 			case "sacrifice": 
-				targetList.push("to sacrifice")
-				break
+				targetList.push("to sacrifice");
+				break;
+			case "lock":
+				targetList.push(`to lock for ${action.forMoves} moves`);
 		}
 	}
 
 	// Effect parser
 	if (effects) {
 		if (effects.powerChange !== undefined) {
-			if (effects.powerChange > 0) effectsList.push(`gains ${effects.powerChange} power`)
-			else if (effects.powerChange < 0) effectsList.push(`loses ${Math.abs(effects.powerChange)} power`)
-		} else if (effects.amplify !== undefined) {
-			effectsList.push(`is amplified by ${effects.amplify} power`)
-		}
+			if (effects.powerChange > 0) effectsList.push(`gains ${effects.powerChange} power`);
+			else if (effects.powerChange < 0) effectsList.push(`loses ${Math.abs(effects.powerChange)} power`);
+		} 
+		else if (effects.amplify !== undefined) effectsList.push(`is amplified by ${effects.amplify} power`);
+		else if (effects.augment !== undefined) effectsList.push(`is augmented by ${effects.augment} energy`);
 
-		if (effects.lock !== undefined) effectsList.push("will get locked")
-		else if (effects.burn !== undefined && effects.burnDegree !== undefined) effectsList.push(`will burn (${effects.burnDegree}x)`)
-		else if (effects.burn !== undefined) effectsList.push("will burn")
+		if (effects.lock !== undefined) effectsList.push("will get locked");
+		else if (effects.burn !== undefined && effects.burnDegree !== undefined) effectsList.push(`will burn (${effects.burnDegree}x)`);
+		else if (effects.burn !== undefined) effectsList.push("will burn");
 
-		if (effects.permanent !== undefined) effectsList.push("permanently")
-		else if (effects.forMoves !== undefined && effects.forMoves === 1) effectsList.push(`for this turn`)
-		else if (effects.forMoves !== undefined) effectsList.push(`for ${effects.forMoves} turns`)
-		else if (effects.untilDestroyed !== undefined) effectsList.push(`until this card is destroyed`)
+		if (effects.permanent !== undefined) effectsList.push("permanently");
+		else if (effects.forMoves !== undefined && effects.forMoves === 1) effectsList.push("for this turn");
+		else if (effects.forMoves !== undefined) effectsList.push(`for ${effects.forMoves} turns`);
+		else if (effects.untilReturned !== undefined) effectsList.push("until returned");
+		else if (effects.untilDestroyed !== undefined) effectsList.push("until this card is destroyed");
 
-		if (effects.sacrifice !== undefined && effects.noRevive !== undefined) effectsList.push("will get sacrificed and can't be revived")
-		else if (effects.sacrifice !== undefined) effectsList.push("will get sacrificed")
+		if (effects.sacrifice !== undefined && effects.noRevive !== undefined) effectsList.push("will get sacrificed and can't be revived");
+		else if (effects.sacrifice !== undefined) effectsList.push("will get sacrificed");
 
-		if (effects.discardNumber !== undefined && effects.discardAndReplace !== undefined) effectsList.push(`discard and replace ${effects.discardNumber} cards from your hand`)
-		else if (effects.discardNumber !== undefined) effectsList.push(`discard ${effects.discardNumber} cards from your hand`)
+		if (effects.discardNumber !== undefined && effects.discardAndReplace !== undefined) effectsList.push(`discard and replace ${effects.discardNumber} cards from your hand`);
+		else if (effects.discardNumber !== undefined) effectsList.push(`discard ${effects.discardNumber} cards from your hand`);
 
-		else if (effects.gainEnergy !== undefined) effectsList.push(`gain ${effects.gainEnergy} energy.`)
+		else if (effects.gainEnergy !== undefined) effectsList.push(`gain ${effects.gainEnergy} energy`);
 	}
 
 	if (restriction) {
@@ -216,25 +224,25 @@ export default function moveContentParser(moveContent: MoveContent) {
 		if (restriction.target !== undefined && restriction.untilWhen !== undefined) {
 			switch (restriction.target) {
 				case "abilities":
-					restrictionTarget = "abilities"
+					restrictionTarget = "abilities";
 					break;
 			}
 
 			switch (restriction.untilWhen) {
 				case "returned":
-					restrictionUntilWhen = "returned"
+					restrictionUntilWhen = "returned";
 					break;
 				case "round":
-					restrictionUntilWhen = "the end of the round"
+					restrictionUntilWhen = "the end of the round";
 					break;
 				case "turn":
-					restrictionUntilWhen = "the end of the turn"
+					restrictionUntilWhen = "the end of the turn";
 					break;
 			}
 
-			restrictionsText = `This card's ${restrictionTarget} can be used once until ${restrictionUntilWhen}`
+			restrictionsText = `This card's ${restrictionTarget} can be used once until ${restrictionUntilWhen}`;
 		} else if (restriction.sacrificeAfterMoves) {
-			restrictionsText = `This card will be sacrificed and can't be revived after ${restriction.sacrificeAfterMoves} moves`
+			restrictionsText = `This card will be sacrificed and can't be revived after ${restriction.sacrificeAfterMoves} moves`;
 		}
 	}
 

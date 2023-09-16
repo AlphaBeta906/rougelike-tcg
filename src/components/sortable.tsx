@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { useSortable } from "@dnd-kit/sortable"; import React from 'react';
+import { useSortable } from "@dnd-kit/sortable";
 
 type Props = {
 	id: string
@@ -11,33 +11,28 @@ type Props = {
 
 export default function Sortable({ id, children, className="", style={ zValue: 0 } }: Props) {
 	const {
-        isDragging,
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition
-    } = useSortable({ id: id });
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition
+	} = useSortable({ id: id });
 
-    console.log(style)
+	const styleNew = {
+		transform: transform !== null ? `translate3d(${transform?.x}px, ${transform?.y}px, 0) scaleX(1) scaleY(1)` : "",
+		transition: transition || undefined,
+		zIndex: transform !== null ? 100 : style.zValue
+	};
 
-    const styleNew = {
-        transform: transform !== null ? `translate3d(${transform?.x}px, ${transform?.y}px, 0) scaleX(1) scaleY(1)` : "",
-        transition: transition || undefined,
-        zIndex: transform !== null ? 100 : style.zValue
-    };
-
-    console.log(style)
-
-    return (
-        <div
-            ref={setNodeRef}
-            style={styleNew}
-            {...attributes}
-            {...listeners}
-            className={className}
-        >
+	return (
+		<div
+			ref={setNodeRef}
+			style={styleNew}
+			{...attributes}
+			{...listeners}
+			className={className}
+		>
 			{children}
 		</div>
-    );
+	);
 }
