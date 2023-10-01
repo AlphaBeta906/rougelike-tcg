@@ -406,38 +406,40 @@ export default function Home() {
 					})}
 				</div>
 
-				<div>Total power: {top}</div>
-				<div>Additional power: {adp}</div>
-				<ul className="list-inside">
-					{Object.values(tp).map(x => x.amplifier).flat().map(({ power, from, to }, index) => {
-						return (
-							<li key={index} className={"font-semibold text-violet-500"}>
-								× {from} amplifies {to} by {power} power
-							</li>
-						);
-					})}
-					{Object.values(tp).map(x => x.additionalPower).flat().map(({ power, from, to }, index) => {
-						return (
-							<li key={index} className={`font-semibold ${power > 0 ? "text-emerald-500" : "text-red-500"}`}>
-								{power > 0 ? "+" : "-"} {to} {power > 0 ? "gains" : "loses"} {power} power from {from}
-							</li>
-						);
-					})}
-				</ul>
+				<div className="w-max m-auto">
+					<div>Total power: {top}</div>
+					<div>Additional power: {adp}</div>
+					<ul className="list-inside">
+						{Object.values(tp).map(x => x.amplifier).flat().map(({ power, from, to }, index) => {
+							return (
+								<li key={index} className={"font-semibold text-violet-500"}>
+									× {from} amplifies {to} by {power} power
+								</li>
+							);
+						})}
+						{Object.values(tp).map(x => x.additionalPower).flat().map(({ power, from, to }, index) => {
+							return (
+								<li key={index} className={`font-semibold ${power > 0 ? "text-emerald-500" : "text-red-500"}`}>
+									{power > 0 ? "+" : "-"} {to} {power > 0 ? "gains" : "loses"} {power} power from {from}
+								</li>
+							);
+						})}
+					</ul>
 
-				<div className="grid gap-2 grid-cols-5 w-fit">
-					<SortableContext items={items} strategy={rectSortingStrategy}>
-						{items.map((id, index) => (
-							<Sortable id={id} key={id} className={`shadow-xl ${id === activeId ? "opacity-0" : ""}`} style={{ zValue: ((index % 5) + 1) * 10}}>
-								<Card
-									{...cards[id]}
-									name={id}
-								/>
-							</Sortable>
-						))}
-					</SortableContext>
+					<div className="grid gap-2 grid-cols-5 w-fit">
+						<SortableContext items={items} strategy={rectSortingStrategy}>
+							{items.map((id, index) => (
+								<Sortable id={id} key={id} className={`shadow-xl ${id === activeId ? "opacity-0" : ""}`} style={{ zValue: ((index % 5) + 1) * 10}}>
+									<Card
+										{...cards[id]}
+										name={id}
+									/>
+								</Sortable>
+							))}
+						</SortableContext>
+					</div>
 				</div>
-				<DragOverlay className="shadow-xl">
+				<DragOverlay className="shadow-2xl">
 					{activeId ? <Card {...cards[activeId]} name={activeId} /> : null}
 				</DragOverlay>
 			</DndContext>

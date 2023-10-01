@@ -9,19 +9,19 @@ export default function CardReduced({ name, rarity, availability="none", energy,
 
 	switch (rarity) {
 		case "common":
-			rarityStyle = "text-white bg-neutral-400 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.7rem] mb-2 border-neutral-500 border-2 font-semibold";
+			rarityStyle = "text-white bg-neutral-400 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.65rem] mb-2 border-neutral-500 border-2 font-semibold";
 			rarityName = "Common";
 			break;
 		case "rare":
-			rarityStyle = "text-white bg-amber-600 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.7rem] border-amber-700 border-2 font-semibold";
+			rarityStyle = "text-white bg-amber-600 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.65rem] border-amber-700 border-2 font-semibold";
 			rarityName = "Rare";
 			break;
 		case "epic":
-			rarityStyle = "text-white bg-slate-400 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.7rem] border-slate-500 border-2 font-semibold";
+			rarityStyle = "text-white bg-slate-400 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.65rem] border-slate-500 border-2 font-semibold";
 			rarityName = "Epic";
 			break;
 		case "legendary":
-			rarityStyle = "text-white bg-yellow-500 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.7rem] border-yellow-600 border-2 font-semibold";
+			rarityStyle = "text-white bg-yellow-500 flex items-center justify-center h-[calc(31.5938px-8px)] text-[0.65rem] border-yellow-600 border-2 font-semibold";
 			rarityName = "Legendary";
 			break;
 	}

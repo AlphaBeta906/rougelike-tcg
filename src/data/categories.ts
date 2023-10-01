@@ -49,7 +49,8 @@ export const categories: Record<string, CategoryData> = {
 		color: "emerald",
 		categories: [
 			"Ants",
-			"Sugars"
+			"Sugars",
+			"Enzymes"
 		]
 	},
 	"Mathematics": {
@@ -109,7 +110,8 @@ export const categories: Record<string, CategoryData> = {
 		categories: [
 			"Historical Libraries",
 			"The Pythagoreans",
-			"Aerial Warfare"
+			"Aerial Warfare",
+			"Battles of the American Civil War"
 		]
 	},
 };

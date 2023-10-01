@@ -8,17 +8,19 @@ export type MoveContent = {
 		coinFlip?: "heads" | "tails"
 		player?: boolean
 		anyone?: true
-		playerAction?: "draw" | "sacrifice" | "lock"
+		playerAction?: "draw" | "sacrifice" | "lock" | "play"
 		specificCardForAction?: string[]
 		inputCard?: true
 		category?: string[] // will change later
 		subcategory?: string[] // will change later
 		numberOfCards?: number
+		currentPhase?: "card playing" | "attacking" | "defending"
 	},
 	target?: {
 		player?: boolean // (player === true) => player & (player === false) => opponent
 		everyone?: true
 		specificCards?: string[]
+		specificTrait?: "locked" | "burning"
 		category?: string[] // will change later
 		subcategory?: string[] // will change later
 		hand?: true
@@ -34,6 +36,7 @@ export type MoveContent = {
 		from: "choose" | "force"
 		action: "imitate" | "sacrifice" | "lock"
 		forMoves?: number
+		untilRoundEnds?: true
 	}
 	effects?: {
 		powerChange?: number
@@ -48,9 +51,11 @@ export type MoveContent = {
 		noRevive?: true
 		lock?: true
 		burn?: true
+		convertedTo?: string
 		burnDegree?: number
 		gainEnergy?: number
 		untilDestroyed?: true
+		untilRoundEnds?: true
 	}
 	restriction?: {
 		target?: "abilities"
@@ -101,8 +106,9 @@ export default function moveContentParser(moveContent: MoveContent) {
 		else if (conditions.losing !== undefined) conditionsText = "If you're losing";
 		else if (conditions.lostRound !== undefined) conditionsText = "If you lost the round";
 		else if (conditions.handSize !== undefined) conditionsText = `If your hand has ${conditions.handSize} cards`;
+		else if (conditions.currentPhase !== undefined) conditionsText = `If the current phase is the ${conditions.currentPhase} phase`;
 		else if (conditions.coinFlip !== undefined) conditionsText = `Flip a coin. If it lands on ${conditions.coinFlip}`;
-		else if (conditions.player !== undefined && conditions.player !== undefined) {
+		else if (conditions.player !== undefined && conditions.playerAction !== undefined) {
 			const playerPossesive = conditions.player ? "your" : "your opponent's";
 			const player = conditions.player ? "you" : "your opponent";
 
@@ -113,15 +119,21 @@ export default function moveContentParser(moveContent: MoveContent) {
 				case "sacrifice":
 					conditionsText = `If ${conditions.specificCardForAction !== undefined ? "one of" : ""} ${playerPossesive} ${conditions.specificCardForAction !== undefined ? `${formatList(conditions.specificCardForAction, "or")} card` : "cards"} gets sacrificed`;
 					break;
+				case "play":
+					conditionsText = `If ${player} ${conditions.player ? "play" : "plays"} ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"}`;
+					break;
 			}
 		}
-		else if (conditions.anyone !== undefined) {
+		else if (conditions.anyone !== undefined && conditions.playerAction !== undefined) {
 			switch (conditions.playerAction) {
 				case "draw":
 					conditionsText = `If someone drew ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"}`;
 					break;
 				case "sacrifice":
 					conditionsText = `If ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"} sacrificed`;
+					break;
+				case "play":
+					conditionsText = `If someone plays ${conditions.specificCardForAction !== undefined ? formatList(conditions.specificCardForAction, "or") : "a card"}`;
 					break;
 			}
 		}
@@ -170,6 +182,7 @@ export default function moveContentParser(moveContent: MoveContent) {
 		else if (target.inputCardTrait !== undefined) targetList.push(`cards that are in the same ${target.inputCardTrait} as the input card`);
 		else if ((target.specificCards !== undefined && target.specificCards.length === 1) || target.thisCard !== undefined) targetList.push("card");
 		else if (target.resources !== undefined) targetList.push("resource cards in play");
+		else if (target.specificTrait !== undefined) targetList.push(`${target.specificTrait} cards`);
 		else targetList.push("cards");
 
 		if (target.hand !== undefined) targetList.push("in hand");
@@ -186,7 +199,8 @@ export default function moveContentParser(moveContent: MoveContent) {
 				targetList.push("to sacrifice");
 				break;
 			case "lock":
-				targetList.push(`to lock for ${action.forMoves} moves`);
+				if (action.forMoves !== undefined) targetList.push(`to lock for ${action.forMoves} moves`);
+				else if (action.untilRoundEnds !== undefined) targetList.push("to lock until round ends");
 		}
 	}
 
@@ -202,12 +216,14 @@ export default function moveContentParser(moveContent: MoveContent) {
 		if (effects.lock !== undefined) effectsList.push("will get locked");
 		else if (effects.burn !== undefined && effects.burnDegree !== undefined) effectsList.push(`will burn (${effects.burnDegree}x)`);
 		else if (effects.burn !== undefined) effectsList.push("will burn");
+		else if (effects.convertedTo !== undefined) effectsList.push(`will be converted to ${effects.convertedTo}`);
 
 		if (effects.permanent !== undefined) effectsList.push("permanently");
 		else if (effects.forMoves !== undefined && effects.forMoves === 1) effectsList.push("for this turn");
 		else if (effects.forMoves !== undefined) effectsList.push(`for ${effects.forMoves} turns`);
 		else if (effects.untilReturned !== undefined) effectsList.push("until returned");
 		else if (effects.untilDestroyed !== undefined) effectsList.push("until this card is destroyed");
+		else if (effects.untilRoundEnds !== undefined) effectsList.push("until the round ends");
 
 		if (effects.sacrifice !== undefined && effects.noRevive !== undefined) effectsList.push("will get sacrificed and can't be revived");
 		else if (effects.sacrifice !== undefined) effectsList.push("will get sacrificed");

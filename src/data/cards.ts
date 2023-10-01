@@ -1411,4 +1411,210 @@ export const cards: Record<string, CardData> = {
 		],
 		category: "Cereal Grains"
 	},
+	"Amylase": {
+		image: "amylase.png",
+		type: "operator",
+		rarity: "rare",
+		energy: 5,
+		power: 0,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						inputCard: true,
+						subcategory: ["Sugars"]
+					},
+					effects: {
+						powerChange: 15
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						inputCard: true,
+						subcategory: ["Sugars"]
+					},
+					effects: {
+						convertedTo: "Glucose"
+					}
+				}
+			}
+		],
+		category: "Enzymes"
+	},
+	"Battle of Fort Sumter": {
+		image: "battle-of-fort-sumter.png",
+		bgCover: true,
+		type: "effect",
+		rarity: "epic",
+		availability: "limited",
+		energy: 10,
+		power: 18,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: false,
+						specificTrait: "locked",
+					},
+					effects: {
+						powerChange: -15,
+						untilReturned: true
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						subcategory: ["Battles of the American Civil War"]
+					},
+					effects: {
+						powerChange: 20,
+						untilReturned: true
+					}
+				}
+			},
+		],
+		category: "Battles of the American Civil War"
+	},
+	"Battle of Bull Run": {
+		image: "battle-of-bull-run.png",
+		bgCover: true,
+		type: "operator",
+		rarity: "legendary",
+		availability: "limited",
+		energy: 7,
+		power: 20,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					conditions: {
+						currentPhase: "defending"
+					},
+					target: {
+						inputCard: true
+					},
+					effects: {
+						powerChange: 25,
+						forMoves: 1
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					conditions: {
+						player: true,
+						playerAction: "play",
+						specificCardForAction: ["Stonewall Jackson"]
+					},
+					target: {
+						player: true,
+						hand: true
+					},
+					effects: {
+						powerChange: 10,
+						forMoves: 1
+					}
+				}
+			},
+		],
+		category: "Battles of the American Civil War"
+	},
+	"Battle of Vicksburg": {
+		image: "battle-of-vicksburg.png",
+		bgCover: true,
+		type: "effect",
+		rarity: "epic",
+		availability: "limited",
+		energy: 7,
+		power: 49,
+		moves: [
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					target: {
+						thisCard: true
+					},
+					effects: {
+						lock: true,
+						untilRoundEnds: true
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: false,
+						hand: true
+					},
+					action: {
+						from: "choose",
+						action: "lock",
+						untilRoundEnds: true
+					}
+				}
+			},
+			{
+				type: "return",
+				description: "",
+				moveContent: {
+					conditions: {
+						winning: true
+					},
+					target: {
+						player: true,
+						specificCards: ["Fourth of July"]
+					},
+					effects: {
+						powerChange: 35,
+						untilReturned: true
+					}
+				}
+			},
+		],
+		category: "Battles of the American Civil War"
+	},
+	"Battle of Appomattox": {
+		image: "battle-of-appomattox.png",
+		bgCover: true,
+		type: "effect",
+		rarity: "epic",
+		energy: 9,
+		power: 10,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: false,
+						hand: true
+					},
+					action: {
+						from: "choose",
+						action: "lock",
+						untilRoundEnds: true
+					}
+				}
+			},
+		],
+		category: "Battles of the American Civil War"
+	},
 };
