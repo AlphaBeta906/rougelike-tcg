@@ -1617,4 +1617,169 @@ export const cards: Record<string, CardData> = {
 		],
 		category: "Battles of the American Civil War"
 	},
+	"Battle of Antietam": {
+		image: "battle-of-antietam.png",
+		bgCover: true,
+		type: "combatant",
+		rarity: "legendary",
+		availability: "limited",
+		energy: 7,
+		power: 67,
+		moves: [
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					conditions: {
+						winning: true
+					},
+					target: {
+						player: true,
+						hand: true
+					},
+					effects: {
+						powerChange: -30,
+						untilReturned: true
+					}
+				}
+			},
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					conditions: {
+						losing: true
+					},
+					target: {
+						player: false,
+						hand: true
+					},
+					effects: {
+						powerChange: -30,
+						untilReturned: true
+					}
+				}
+			},
+		],
+		category: "Battles of the American Civil War"
+	},
+	"Id": {
+		image: "id.png",
+		bgCover: true,
+		type: "combatant",
+		rarity: "rare",
+		availability: "limited",
+		energy: 4,
+		power: 40,
+		moves: [
+			{
+				type: "draw",
+				description: "",
+				moveContent: {
+					target: {
+						oneCard: true,
+						player: true,
+						hand: true
+					},
+					effects: {
+						powerChange: 45,
+						forMoves: 1
+					}
+				}
+			},
+		],
+		category: "Ego Psychology"
+	},
+	"Superego": {
+		image: "superego.png",
+		bgCover: true,
+		type: "combatant",
+		rarity: "epic",
+		availability: "limited",
+		energy: 7,
+		power: 68,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					target: {
+						player: false,
+						hand: true
+					},
+					action: {
+						from: "choose",
+						action: "lock",
+						forMoves: 1
+					}
+				}
+			},
+			{
+				type: "return",
+				description: "",
+				moveContent: {
+					target: {
+						player: true,
+						specificCards: ["Ethics"]
+					},
+					effects: {
+						powerChange: 30,
+						untilReturned: true
+					}
+				}
+			},
+		],
+		category: "Ego Psychology"
+	},
+	"Ego": {
+		image: "ego.png",
+		bgCover: true,
+		type: "combatant",
+		rarity: "legendary",
+		availability: "limited",
+		energy: 9,
+		power: 87,
+		moves: [
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					conditions: {
+						player: true,
+						playerAction: "play",
+						specificCardForAction: ["Id", "Superego"],
+						specificCardsAnd: true
+					},
+					target: {
+						player: true,
+						hand: true
+					},
+					effects: {
+						powerChange: -20,
+						forMoves: 1
+					}
+				}
+			},
+			{
+				type: "play",
+				description: "",
+				moveContent: {
+					conditions: {
+						player: true,
+						playerAction: "play",
+						specificCardForAction: ["Id", "Superego"],
+						specificCardsAnd: true
+					},
+					target: {
+						thisCard: true
+					},
+					effects: {
+						powerChange: 55,
+						forMoves: 1
+					}
+				}
+			},
+		],
+		category: "Ego Psychology"
+	},
 };

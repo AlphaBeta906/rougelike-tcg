@@ -14,11 +14,12 @@ export const categories: Record<string, CategoryData> = {
 			"Taoism"
 		]
 	},
-	"Psychology": {
+	"Psychology and Neuroscience": {
 		color: "pink",
 		categories: [
 			"Stimulants",
-			"Classical Conditioning"
+			"Classical Conditioning",
+			"Ego Psychology"
 		]
 	},
 	"Religion & Mythology": {
